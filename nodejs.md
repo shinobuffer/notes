@@ -38,13 +38,34 @@ url模块
 
 ### events
 
-events模块提供了一个`EventEmitter`类用于处理事件
+events模块提供了一个`EventEmitter`类用于处理事件，在该机制下，一个事件名对应一种事件，每个事件维护一个监听队列，并在触发时按序触发队列里的回调函数。
 
 ```js
 const EventEmitter = require('events')
-const eventEmitter = new EventEmitter()
-
+const emitter = new EventEmitter()
 ```
+
+`EventEmitter`实例有以下方法
+
+- `addListener/on(name,listener)`添加一个回调函数到某事件的队列尾，多次调用多次添加。返回实例本身因此可以链式调用（下同某些方法同）
+
+- `emit(name,[,...args])`触发某事件，按序调用事件队列中的回调函数并传递参数
+
+- `eventNames()`返回现有事件名的数组
+
+- `listenerCount(name)`返回某事件注册的回调函数数量
+
+- `listeners(name)`返回某事件的回调函数队列
+
+- `removeListener/off(name,listener)`从某事件的队列中移除回调函数，每次移除只移除一个回调。
+
+- `once(name,listener)`添加一个只触发一次的回调函数到某事件的队列尾
+
+- `prependListener(name,listener)`添加一个回调函数到某事件的队列头
+
+- `prependOnceListener(name,listener)`添加一个只触发一次的回调函数到某事件的队列头
+
+- `removeAllListener([name])`清空某事件/所有事件的队列
 
 ### fs
 
