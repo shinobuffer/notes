@@ -22,7 +22,7 @@ http.createServer((req, res)=>{
 
 req对象（[`http.IncomingMessage`](http://nodejs.cn/api/http.html#http_class_http_incomingmessage)）相关属性方法
 
-- url-请求地址
+- 
 
 res对象（[`http.ServerResponse`](http://nodejs.cn/api/http.html#http_class_http_serverresponse)）相关属性方法
 
@@ -92,4 +92,14 @@ fs模块中的流式文件读取/写入
 ### path
 
 path模块用于文件系统路径解析
+
+- `path.basename(path[,ext])`返回路径的最后一部分，可选择滤掉扩展名
+- `path.dirname(path)`返回路径目录部分
+- `path.extname(path)`返回路径扩展名
+- `path.isAbsolute(path)`判断是否绝对路径
+- `path.join(...)`拼接路径的多个部分并返回
+- `path.normalize(path)`去除`..`、`.`计算路径
+- `path.parse(path)`解析路径返回一个`{root,dir,base,ext,name}`对象
+- `path.relative(from,to)`基于当前路径返回 `from` 到 `to` 的相对路径
+- `path.resolve(...)`基于当前路径和传入片段计算返回绝对路径
 
