@@ -22,11 +22,24 @@ http.createServer((req, res)=>{
 
 req对象（[`http.IncomingMessage`](http://nodejs.cn/api/http.html#http_class_http_incomingmessage)）相关属性方法
 
-- 
+- `status(Code|Message)` 请求状态
+- `headers`, `rawHeaders` 请求头
+- `method` 请求方法
+- `httpVersion` HTTP版本
+- `url` 请求url
 
 res对象（[`http.ServerResponse`](http://nodejs.cn/api/http.html#http_class_http_serverresponse)）相关属性方法
 
-- 
+- `getHeaderNames()` 获取响应头名称列表
+- `getHeaders()` 获取已设置的响应头的副本
+- `setHeader('headername', value)` 设置响应头字段
+- `getHeader('headername')` 获取响应头字段
+- `removeHeader('headername')` 移除响应头字段
+- `hasHeader('headername')` 判断是否存在指定响应头字段
+- `headersSent` 响应头是否已被发送给客户端
+- `writeHead(statusCode[,headers])`发送请求头，其中的headers会与之前已设置的headers合并
+- `write(chunk[,encoding][,callback)`发送请求体，默认utf8编码
+- `end(chunk[,encoding][,callback)`发送最后请求体并结束请求，默认utf8编码
 
 ### url
 
@@ -88,6 +101,24 @@ fs模块中的流式文件读取/写入
 - `fs.createReadStream(path[,options])`创建一个读流rs，options接收`{flags,encoding,fd,mode,autoClose,emitClose,start,end,highWaterMark,fs}`。监听流上的`data`事件来获取数据，监听流上的`end`事件读取完成后回调
 - `fs.createWriteStream(path[,options])`创建一个写流ws，options接收`{flags,encoding,fd,mode,autoClose,emitClose,start,fs}`。监听流上的`finish`事件写入完成后回调
 - `rs.pipe(ws)`管道传输复制文件
+
+### buffer
+
+buffer用于处理二进制数据
+
+使用`Buffer.from(array)`、`Buffer.alloc(size)`、`Buffer.allocUnsafe(size)`创建一个buffer，单位为字节
+
+Buffer（字节数组）可以像数组一样通过下标被访问和修改，每个元素是一个0-255的整数，通过`buffer.length`获取buffer大小，也可以迭代
+
+`buffer.write(string[,offset[,length]][,encoding])`将字符串写入buffer
+
+`srcBuffer.copy(destBuffer[,start,end])`将源buffer拷贝到目标buffer
+
+`buffer.slice(start,end)`用于buffer的切片（返回视图不是副本）
+
+`buffer.indexOf(value[,byteOffset][,encoding])`value可以是string/buffer/uint8array/int，查找目标出现的位置
+
+`buffer.includes(value[,byteOffset][,encoding])`value同上，判断是否含有目标
 
 ### path
 
