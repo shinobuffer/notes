@@ -94,7 +94,7 @@ writing阶段，主要在生成项目文件，将文件从源（模板）搬运�
 
 `generator.sourceRoot([path])`获取源路径（模板位置）或设定源路径
 
-`generator.templatePaht(path)`拼接到源路径并返回
+`generator.templatePath(path)`拼接到源路径并返回
 
 `generator.fs`暴露了文件操作的方法（全程在内存中）
 
@@ -133,7 +133,6 @@ cd ~/.feflow
 npm link generator-test
 ```
 
-修改`~/.felfow/package.json`文件，在`dependencies`字段添加`"generator-test": "1.0.0"`，让feflow能找到脚手架，之后就可以执行`feflow init`测试执行脚手架了。
+修改`~/.feflow/package.json`文件，在`dependencies`字段添加`"generator-test": "1.0.0"`，让feflow能找到脚手架，之后就可以执行`feflow init`测试执行脚手架了。
 
 如果你还装了yeoman，执行`yo test`来测试执行脚手架
-
