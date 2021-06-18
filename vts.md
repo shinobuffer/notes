@@ -10,6 +10,7 @@ npm install vue-loader vue-template-compiler typescript ts-loader tslint tslint-
 webpack配置
 
 ```js
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 // plugins添加配置
 plugins: [
   new VueLoaderPlugin()
