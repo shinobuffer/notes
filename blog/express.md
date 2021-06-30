@@ -38,12 +38,12 @@ app.use((res, req)=>{
 
 ## 路由
 
-路由是一种特殊的中间件，通过`app.get(path, (req,res,next)=>{}`注册一个路由（get可以替换唯post/put等方法），支持动态路由（类似于vue-router）。**路由匹配的顺序同定义的顺序，默认情况下一旦命中就不会继续向下匹配**，但可以通过调用next方法来强制继续向下匹配
+路由是一种特殊的中间件，通过`app.get(path, (req,res,next)=>{}`注册一个路由（get可以替换唯post/put等方法），支持命名路由（类似于vue-router）。**路由匹配的顺序同定义的顺序，默认情况下一旦命中就不会继续向下匹配**，但可以通过调用next方法来强制继续向下匹配
 
 ```typescript
 app.get('/:id', (req, res, next)=>{
   const query = req.query; // query对象
-  const params = req.params; // 动态路由参数对象
+  const params = req.params; // 命名路由参数对象
   res.send('hello');
   // next(); // 调用next方法来继续向下匹配
 })

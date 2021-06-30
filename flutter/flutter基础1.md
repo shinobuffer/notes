@@ -1,5 +1,3 @@
-
-
 本文为Flutter系列的第一弹，意在介绍入门Flutter时常用基础组件（**展示组件篇**）及其常用属性，如果对某个组件有深入研究需要或需要了解更多组件，可以参考[老孟的文章](http://laomengit.com/flutter/widgets/widgets_structure.html)
 
 ## 起步

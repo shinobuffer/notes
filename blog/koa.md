@@ -9,7 +9,11 @@ const app = koa();
 app.listen(3000);
 ```
 
-koa中的中间件使用和express类似同样使用`app.use(middleware)`
+koa调用`app.use(middleware)`来使用中间件，中间件是一个`async (ctx, next)=>{}`的异步函数。**koa的应用级中间件总是优先于路由中间件，与定义顺序无关**。
+
+中间件的执行顺序遵循“洋葱模型”：每个中间件以`await next()`为分界线分割为“上部”和“下部”，当一个中间件执行完“上部”并执行到`next`时就会暂停当前中间件的执行，进入下一个中间件的“上部”执行；当所有“上部”都完成执行，程序开始倒序执行中间件的“下部”
+
+![clipboard.png](/home/oshino/Desktop/notes/blog/koa.assets/bV6D5Z)
 
 ## 上下文
 
@@ -72,13 +76,42 @@ koa的`context`对node中的request和response对象进行了封装，并在上�
 
 ## 路由
 
+在koa中多了一个“路由器Router”的概念
+
+- 路由器支持使用中间件
+- 路由器上可挂载路由（支持命名路由）
+- 调用`router.routes()`获取合并好的中间件
+- 路由器可以嵌套（`routerA.use(routerB.routes())`）
+- `router.redirect(source, destination, [code])`路由重定向
+
 ```typescript
 import Router from 'koa-router';
+const router = new Router({
+  prefix: '/api' // 路由前缀作为根url
+});
 
+router.use(middleware); // 对所有请求使用中间件
+router.use('/login', middleware);  // 针对指定url使用中间件
+router.use(['/login', '/register'], middleware); // 针对一组url使用中间件
+
+router.get('/:uid', async (ctx, next)=>{
+  const params = ctx.params; // 命名路由参数对象
+});
+// 其他路由
+
+router.redirect('/stat', 'statistics'); // 将/stat重定向至/statistics
+
+app.use(router.routes());
 ```
-
-
 
 ## 常用三方中间件
 
 `koa-bodyparser`可以新增`ctx.request.body`，将rawBody转换为objBody
+
+```typescript
+import bodyParser from 'koa-bodyparser'
+app.use(bodyParser());
+```
+
+`koa-static`提供静态服务，`app.use(koaStatic(targetDir))`开启「/=>targetDir」的静态托管服务
+
