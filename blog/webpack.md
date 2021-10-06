@@ -2,10 +2,12 @@
 > webpack5安装`webpack@next、webpack-cli`
 > 其中webpack5实现更为强大的tree-shaking，能自动实现无用代码的去除，无需额外配置
 
-webpack作用：根据配置文件，通过项目入口，递归地收集依赖关系，将项目打包，顺便做下代码转化和文件优化。
+webpack作用：根据配置文件，通过项目入口，递归地收集依赖关系，将项目打包，顺便做下代码转化和文件优化
+
 
 
 ## entry & output & resolve
+
 使用`entry、output`字段指定webpack的项目入口和打包输出
 ```javascript
 module.exports = {
@@ -60,9 +62,11 @@ module.exports = {
 }
 ```
 
+
+
 ## 常用loader
 
-对代码进行转换的部分称为loader，在配置中对应`module`字段，值是一个对象。`module.rules`数组描述了各类文件的处理方法和顺序。`loader`是有处理顺序的，默认**从左到右，从下到上**。
+对代码进行转换的部分称为loader，在配置中对应`module`字段。`module.rules`数组描述了各类文件的处理方法和顺序。`loader`是有处理顺序的，默认**从左到右，从下到上**。
 
 ### 样式处理
 
@@ -73,12 +77,12 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const postcssLoader = {
   loader: 'postcss-loader',
   options: {
-  	postcssOption: {
-  		plugins: [
+    postcssOption: {
+      plugins: [
         // require('autoprefixer'),
         require('postcss-preset-env')(),
       ]
-  	}
+    }
   }
 };
 
@@ -128,7 +132,7 @@ module.exports = {
 }
 ```
 
-css压缩需要用到插件`optimize-css-assets-webpack-plugin`，使用时new入`plugins`字段即可。
+css压缩需要用到插件`optimize-css-assets-webpack-plugin`，使用时new入`plugins`字段即可
 
 ### 代码处理
 
@@ -169,14 +173,14 @@ module.exports = {
 
 ### 其他处理
 
-若要处理css中`url(./img.jpg)`这类文件资源的导入，需要使用`url-loader、file-loader`，前者处理`url(xxx)`，后者处理文件。若要处理html中`src=./img.jpg`这类文件资源的导入，需要使用`html-loader`。
+若要处理css中`url(./img.jpg)`这类文件资源的导入，需要使用`url-loader、file-loader`，前者处理`url(xxx)`，后者处理文件。若要处理html中`src=./img.jpg`这类文件资源的导入，需要使用`html-loader`
 
 ```js
 module.exports = {
-	module: {
-		rules: [
-			{
-				test: /\.(jpe?g|png|gif)$/,
+  module: {
+    rules: [
+      {
+        test: /\.(jpe?g|png|gif)$/,
         loader: 'url-loader',
         options: {
           limit: 1000, // 低于1000kb的文件直接base64编码
@@ -186,15 +190,17 @@ module.exports = {
           // url-loader默认es6解析，html-loader默认commonjs解析，需统一
           esModule: false, 
         }
-			},
-			{
-				test: /\.html$/,
+      },
+      {
+        test: /\.html$/,
         loader: 'html-loader',
-			},
-		]
-	}
+      },
+    ]
+  }
 }
 ```
+
+
 
 ## 开发必备
 
@@ -242,13 +248,15 @@ module.exports = {
 }
 ```
 
+
+
 ## 构建优化
 
 每个文件都会尝试去跟所有loader匹配，但通常来说只会命中一个，可以通过`oneOf`将不相干扰的loader放在一起，这样一旦命中其中的一个loader就会终止之后无用的匹配
 
 ```js
 rules: [
-	{
+  {
     oneOf: [
       // js loader
       // css loader
@@ -291,7 +299,7 @@ module.exports = {
         cache: true, // 开启缓存
         parallel: true, // 多线程打包
         sourceMap: false, // 是否sourceMap
-    	})
+      })
     ]
   }
 }
@@ -319,7 +327,7 @@ module.exports = {
 }
 ```
 
-使用dll对某些不变库进行单独打包，这需要另起一份配置文件专门用于这些库的打包，最终生成一份映射文件。在开发生产环境中导入该映射文件告知不打包这些库。
+使用dll对某些不变库进行单独打包，这需要另起一份配置文件专门用于这些库的打包，最终生成一份映射文件。在开发生产环境中导入该映射文件告知不打包这些库
 
 ```js
 // webpack.dll.js
@@ -351,6 +359,8 @@ module.exports = {
   ]
 }
 ```
+
+
 
 ## 其他
 

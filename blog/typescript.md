@@ -4,15 +4,15 @@
 
 数组`T[]`/`Array<T>`
 
-元组`[T1, T2]`，表示一个已知元素数量和类型的数组。访问一个已知索引的元素，会得到正确的类型；访问一个越界的元素，会使用联合类型替代。
+元组`[T1, T2]`，表示一个已知元素数量和类型的数组。访问一个已知索引的元素，会得到正确的类型；**访问一个越界的元素，会使用联合类型替代**
 
-任意类型`any`，可以忽略编译阶段的检查，尽量少用，变量类型能确定就确定
+任意类型`any`，可以忽略编译阶段的检查，尽量少用，**变量类型能确定尽量就确定**
 
 没有任意类型`void`，通常用于返回值类型表示无返回值
 
-`undefined`和`null`各有自己的同名类型，默认情况下`null`和`undefined`是所有类型的子类型
+`undefined`和`null`各有自己的同名类型，默认情况下**`null`和`undefined`是所有类型的子类型**
 
-非原始类型`object`，除`number`，`string`，`boolean`，`symbol`，`null`或`undefined`之外的类型。
+非原始类型`object`，除`number`，`string`，`boolean`，`symbol`，`null`或`undefined`之外的类型
 
 `never`和`unknown`
 
@@ -21,9 +21,11 @@
 
 使用`T1 as T2`将类型T1断言为类型T2
 
+
+
 ## 枚举
 
-数字枚举，枚举成员默认从零开始自增，遇到用户指定值则从该值开始自增
+数字枚举，枚举成员默认从零开始自增，**遇到用户指定值则从该值开始自增**
 
 ```typescript
 enum Direction {
@@ -41,7 +43,7 @@ enum Direction {
 } // Up Down Left Right 分别为 0 1 10 11
 ```
 
-数字枚举存在反向映射，比如在上面代码中有`Direction[0]==='Up'`
+**数字枚举存在反向映射**，比如在上面代码中有`Direction[0]==='Up'`
 
 ------
 
@@ -92,7 +94,7 @@ interface SearchFun {
 const serachFun: SearchFun = (src: string, subString: string) => src.search(subString) > -1
 ```
 
-接口可以限制类，实现了接口的类需要实现接口中的所有方法。当一个类实现了一个接口时，只对其实例部分进行类型检查。constructor属于类的静态部分，不在检查的范围内。
+接口可以限制类，**实现接口的类需要实现接口中的所有方法**。当一个类实现了一个接口时，**只对其实例部分进行类型检查**。constructor属于类的静态部分，不在检查的范围内
 
 ```typescript
 interface ClockInterface {
@@ -109,7 +111,7 @@ class Clock implements ClockInterface {
 }
 ```
 
-接口可以相互继承，一个接口可以继承多个接口，从而扩展“形状”
+接口可以相互继承，**一个接口可以继承多个接口**，从而扩展“形状”
 
 ```typescript
 interface Shape {
@@ -121,7 +123,7 @@ interface Square extends Shape {
 const square: Square = { color: 'red', sideLength:10 }
 ```
 
-接口还能继承类【待补充】
+
 
 ## 类
 
@@ -132,13 +134,13 @@ const square: Square = { color: 'red', sideLength:10 }
 - `protected`-只能在本类和派生内中访问
 - `readonly`-属性只读，只读属性必须在声明时或构造函数里被初始化
 
-构造函数也可以被标记成`protected`，这意味着这个类不能在包含它的类外被实例化，但是能被继承。
+构造函数也可以被标记成`protected`，这意味着这个类不能在包含它的类外被实例化，但是能被继承
 
-只带有`get`不带有`set`的存取器自动被推断为`readonly`。
+只带有`get`不带有`set`的存取器自动被推断为`readonly`
 
 
 
-使用`abstract`关键字定义抽象类和抽象方法，抽象类不能实例化。抽象类可以包含具体方法，也可以定义抽象方法，抽象类中的抽象方法必须在派生类中实现。
+使用`abstract`关键字定义抽象类和抽象方法，抽象类不能实例化。**抽象类可以包含具体方法，也可以定义抽象方法**，抽象类中的抽象方法必须在派生类中实现
 
 ```typescript
 abstract class Animal {
@@ -166,7 +168,9 @@ const peopleMaker: typeof People = People;
 const people = new peopleMaker('A');
 ```
 
-类本身也是一种类型，子类变量可以赋值给父类变量
+类本身也是一种类型，**子类变量可以赋值给父类变量**
+
+
 
 ## 函数
 
@@ -180,7 +184,7 @@ const add = (a: number, b: number): number => a+b
 const add: (a: number, b: number) => number = (a: number, b: number): number => a+b
 ```
 
-函数可选参数必须放在参数列表的最后；默认参数是可选参数的一个特例，可以不放在最后（通过传入`undefined`来激活使用默认值）；剩余参数必须放在参数列表的最后，是一个数组类型
+函数可选参数必须放在参数列表的最后；**默认参数是可选参数的一个特例，可以不放在最后**（通过传入`undefined`来激活使用默认值）；剩余参数必须放在参数列表的最后，是一个数组类型
 
 ```typescript
 function concatName(n1='Bersder', n2?: string) {
@@ -204,7 +208,7 @@ const Obj = {
 Obj.fun()
 ```
 
-可以通过定义多个函数类型来实现函数重载（函数不同入参对应不同出参）,编译器检查时按序尝试重载列表，因此定义重载的时候，一定要把最精确的定义放在最前面
+可以通过**定义多个函数类型来实现函数重载**（函数不同入参对应不同出参）,编译器检查时按序尝试重载列表，因此定义重载的时候，一定要把最**精确的定义放在最前面**
 
 ```typescript
 function random(): number; // 重载1
@@ -216,6 +220,8 @@ function random(x): any {
     return x[Math.floor(Math.random() * x.length)]
 }
 ```
+
+
 
 ## 泛型
 
@@ -230,7 +236,7 @@ const strArr = initArray<string>('0', 10);
 const numArr = initArray(0, 10); // 自动推断T为number
 ```
 
-泛型也能用在接口和类上，但泛型类指的是实例部分的类型，类的静态属性不能使用泛型类型。
+泛型也能用在接口和类上，但泛型类指的是实例部分的类型，类的静态属性不能使用泛型类型
 
 ```typescript
 interface Dict<K, V> {
@@ -246,7 +252,7 @@ class MyArray<T> {
 }
 ```
 
-泛型使用`extends`进行扩展约束
+**泛型使用`extends`进行约束**
 
 ```typescript
 function getLen<T extends { length: number }>(arg: T) {
@@ -256,6 +262,8 @@ function getLen<T extends { length: number }>(arg: T) {
 console.log(getLen([])) // 0
 console.log(getLen(0)) // error，整形变量无length属性
 ```
+
+
 
 ## 类型的兼容[有点乱]
 
@@ -273,7 +281,7 @@ let y = { name: 'Alice', location: 'Seattle' };
 x = y;
 ```
 
-函数的兼容较复杂，返回值一致的情况下参数少的可以赋值给多的；参数一致的情况下返回值适用上面提到的规则
+函数的兼容较复杂，返回值一致的情况下**参数少的可以赋值给多的**；参数一致的情况下返回值适用上面提到的规则
 
 ```typescript
 let x = (a: number) => 0;
@@ -308,9 +316,11 @@ let status = Status.Ready;
 status = Color.Green;  // Error
 ```
 
+
+
 ## 高级类型
 
-交叉类型是将多个类型合并为一个类型，相当于取并集，使用`&`来交叉多个类型
+交叉类型是将多个类型合并为一个类型，**相当于取并集**，使用`&`来交叉多个类型
 
 ```typescript
 interface A {
@@ -322,7 +332,7 @@ interface B {
 type C = A & B // 相当于C里有name和age
 ```
 
-联合类型表示实际类型可能是一堆类型中的一个，使用`|`联合多个类型，默认情况下只能访问此联合类型的所有类型里共有的成员
+联合类型表示实际类型可能是一堆类型中的一个，**相当于多选一**，使用`|`联合多个类型，**默认情况下只能访问此联合类型的所有类型里共有的成员**
 
 ```typescript
 function getLen(arg: any[] | string) {
@@ -430,7 +440,7 @@ type Flags = { [K in Keys]: boolean };
 // 自定义映射后得到类型 { nameChecked: boolean, ageChecked: boolean }
 ```
 
-TS提供的几个内置映射类型
+TS提供的几个内置映射类型：
 
 - `Partial<T>`-将T中所有属性全改为可选属性
 - `Required<T>`-将T中所有属性全改为必选属性
@@ -438,19 +448,21 @@ TS提供的几个内置映射类型
 - `Pick<T, K extends keyof T>`-选取T中部分属性
 - `Record<K extends keyof any, T>`-`[P in K]: T`
 
-TS提供的几个条件类型
+TS提供的几个条件类型：
 
-- `Exclude<T, U>`-从`T`中剔除可以赋值给`U`的类型。
-- `Extract<T, U>`-提取`T`中可以赋值给`U`的类型。
-- `NonNullable<T>`-从`T`中剔除`null`和`undefined`。
-- `ReturnType<T>`-获取函数类型`T`返回值类型。
-- `InstanceType<T>`-获取构造函数类型`T`的实例类型。
+- `Exclude<T, U>`-从`T`中剔除可以赋值给`U`的类型
+- `Extract<T, U>`-提取`T`中可以赋值给`U`的类型
+- `NonNullable<T>`-从`T`中剔除`null`和`undefined`
+- `ReturnType<T>`-获取函数类型`T`返回值类型
+- `InstanceType<T>`-获取构造函数类型`T`的实例类型
+
+
 
 ## 模块
 
 TS兼容ES6的模块语法，而且增加了类型别名和接口的导出和导入。如果使用了模块语法，就不要使用命名空间了
 
-为了兼容CommonJS和AMD中的`exports`，TS提供了`export =`语法，相当于ES6中的默认导出。若使用`export =`导出一个模块，则必须使用特定语法`import module = require("module")`来导入此模块。
+为了兼容CommonJS和AMD中的`exports`，TS提供了`export =`语法，相当于ES6中的默认导出。若使用`export =`导出一个模块，则必须使用特定语法`import module = require("module")`来导入此模块
 
 ```typescript
 // 被引用模块 Validator.ts
@@ -460,13 +472,15 @@ export = class Validator {};
 import Validator = require('./Validator');
 ```
 
+
+
 ## 装饰器
 
 > 装饰器是一项实验性特性，需在`tsconfig.json`里启用`experimentalDecorators`
 
 装饰器是一种特殊类型的声明，它能够被附加到类声明，方法，访问符，属性或参数上，用来修改原代码的行为。
 
-装饰器使用`@decorator`的形式，装饰器本质是一个函数，它会在运行时被调用，被装饰的声明信息做为参数传入。如果修饰器需要传参，修饰器需要返回一个函数作为真正的修饰器。多个修饰器可以作用在一个目标上。
+装饰器使用`@decorator`的形式，装饰器本质是一个函数，它会在运行时被调用，被装饰的声明信息做为参数传入。**如果修饰器需要传参，修饰器需要返回一个函数作为真正的修饰器**。多个修饰器可以作用在一个目标上
 
 ```typescript
 function t1(target) {
@@ -511,7 +525,7 @@ class Greeter {
 
 方法装饰器应用到方法的属性描述符上，可以用来监视，修改或者替换方法定义。方法装饰器会在运行时传入下列3个参数：
 
-1. 对于静态成员来说是类的构造函数，对于实例成员是类的原型对象。
+1. 对于静态成员来说是类的构造函数，对于实例成员是类的原型对象
 2. 成员的名字
 3. 成员的属性描述符
 
@@ -538,19 +552,17 @@ class Greeter {
 
 访问器装饰器应用于访问器的属性描述符，可以用来监视，修改或替换一个访问器的定义。访问器装饰器会在运行时传入下列3个参数：
 
-1. 对于静态成员来说是类的构造函数，对于实例成员是类的原型对象。
+1. 对于静态成员来说是类的构造函数，对于实例成员是类的原型对象
 2. 成员的名字
 3. 成员的属性描述符
 
-注意：不允许同时装饰一个成员的`get`和`set`访问器，因为装饰器应用于一个属性描述符时，它联合了`get`和`set`访问器
-
-使用上类似方法装饰器。
+注意：**不允许同时装饰一个成员的`get`和`set`访问器**，因为装饰器应用于一个属性描述符时，它联合了`get`和`set`访问器
 
 ### 属性装饰器
 
 属性装饰器会在运行时传入下列2个参数：
 
-1. 对于静态成员来说是类的构造函数，对于实例成员是类的原型对象。
+1. 对于静态成员来说是类的构造函数，对于实例成员是类的原型对象
 2. 成员的名字
 
 ```typescript
@@ -573,6 +585,8 @@ class Hello {
 2. 成员的名字
 3. 参数在函数参数列表中的索引
 
+
+
 ## 声明文件
 
 TS中声明的实体有三类：命名空间、类型、值（**一个实体可以拥有多种身份**）
@@ -591,9 +605,14 @@ TS中声明的实体有三类：命名空间、类型、值（**一个实体可�
 - **函数 (function)**: 值
 - **变量 (let, const, var, parameters)**: 值
 
-使用`declare var/const`声明变量；`declare function`声明函数；`declare namespace`声明带属性对象（使用点访问）；`declare class`声明类；`interface`接口和`type`别名在声明文件中正常使用。
+使用`declare var/const`声明变量；`declare function`声明函数；`declare namespace`声明带属性对象（使用点访问）；`declare class`声明类；`declare module`声明模块；`interface`接口和`type`别名在声明文件中正常使用
 
 ```typescript
+declare module 'react' {
+  // 声明模块
+  export interface Component {/* ... */}
+}
+
 // 变量声明
 declare var v1: string;
 // 函数声明（可多次声明来函数重载）
@@ -613,20 +632,21 @@ declare class Greeter {
 }
 ```
 
-`declare`关键字在声明文件的顶层使用，若需要导出使用，使用`export`关键字代替`declare`；`export`也能在命名空间下使用。
+据我观察，编写`declare`的作用有二：
+
+- 为自己编写的库/第三方库提供TS支持，获得代码提示和补全功能
+- 为全局/三方库中的扩展变量提供类型支持，解决TS报错的同时获得代码提示和补全功能
 
 ```typescript
-// file test.d.ts
-declare functionIn(): void;
-export functionOut(): void; // import {functionOut} from 'test'
-
-declare namespace MyClass {
-  export interface MyClassMethodOptions {
-      width?: number;
-      height?: number;
+// 为window对象中的自定义变量提供类型支持
+declare global {
+  interface Window {
+    isSSR: boolean
   }
 }
 ```
+
+
 
 ## tsconfig
 
@@ -646,6 +666,16 @@ declare namespace MyClass {
     "noImplicitAny": false, // 默认允许隐式any
     "noImplicitThis": false, // 默认不强制this类型确定
     "strictNullChecks": false, // 默认不强制空安全
+    // 路径别名（配合webpack）
+    "paths": {
+      "@src": ["src/*"]
+    },
+    // 声明文件
+    "types": [
+      "./typings/global"
+      "jest",
+      "node"
+    ]
   },
   "include": ["./src/**/*"],
   "exclude": ["node_modules"],

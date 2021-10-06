@@ -3,9 +3,10 @@
 音视频：netease-cloud-music vlc
 解压缩：ark 及可选依赖 unzip-iconv
 终端：https://www.cnblogs.com/orginly/archive/2021/04/11/14646078.html
-网络、下载：qv2ray v2ray qbittorrent-enhanced-git
+网络、下载：qv2ray-dev-git v2ray qbittorrent-enhanced-git
 更新支持：packagekit-qt5 packagekit appstream-qt appstream
 推荐：gwenview spectacle typora timeshift
+pandoc：pandoc pandoc-crossref texlive-core（texlive-langchinese texlive-fontsextra）
 
 ## ArchLinux 疑难杂症解决方案
 ### 连接WiFi后无法打开应用
@@ -18,6 +19,10 @@
 ```
 ### 蓝牙启用
 启用蓝牙前（`systemctl enable bluetooth`）安装`pulseaudio-bluetooth`
+
+### 网速显示插件不生效
+
+需要安装`ksysguard`来使Netspeed Widget生效
 
 ## ArchLinux 必备命令
 ### pacman 命令
@@ -32,6 +37,7 @@ pacman -Rd 删除包时不检查依赖
 
 pacman -Qi 查看包信息
 pacman -Ql 列出包文件
+pacman -Qdtq 查看孤立包
 
 pacman -Sc 清理/var/cache/pacman/pkg下未安装的包
 pacman -Scc 清理缓存

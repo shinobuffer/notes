@@ -1,15 +1,14 @@
-> 参照自[Effective Dart](https://dart.cn/guides/language/effective-dart)
-> 下面是一些易错的代码风格
+> 参照自[Effective Dart](https://dart.cn/guides/language/effective-dart)，下面是一些易错的代码风格
 
 优先使用`for(.. in ..)`而非`foreach`
 
-除非想修改结果的类型,否则不要使用 `List.from()`，因为`List.from()`会默认将类型改成dynamic
+除非想修改结果的类型,否则不要使用 `List.from()`，因为`List.from()`会默认将类型改成 dynamic
 
 使用`whereType()`筛选集合中的类型
 
 避免使用`cast`方法
 
-`不要`使用lambda表达式来替代`tear-off`
+`不要`使用 lambda 表达式来替代`tear-off`
 
 在实现类成员的`getter`方法时，应该避免保存可计算的结果
 
@@ -35,7 +34,7 @@
 
 不推荐设计`仅`包含静态成员的类
 
-基类用XXXBase命名
+基类用 XXXBase 命名
 
 基础数据类型的返回值不要返回`null`
 

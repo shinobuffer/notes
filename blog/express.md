@@ -1,4 +1,4 @@
-创建一个简单服务，下面的所有操作都将围绕app这个变量完成
+调用`express()`创建一个简单服务，下面的所有操作都将围绕`app`这个变量完成
 
 ```typescript
 import express from 'express';
@@ -7,9 +7,11 @@ const app = express();
 app.listen(3000);
 ```
 
+
+
 ## 中间件
 
-服务器对每个请求的处理可分解为多次操作，中间件就是这些操作的封装，**中间件的匹配及执行顺序同其定义顺序**。
+服务器对每个请求的处理可分解为多次操作，中间件就是这些操作的封装，**中间件的匹配及执行顺序同其定义顺序**
 
 通过`app.use(middleware)`来使用一个中间件，中间件是一个接受三个参数的函数
 
@@ -36,9 +38,11 @@ app.use((res, req)=>{
 })
 ```
 
+
+
 ## 路由
 
-路由是一种特殊的中间件，通过`app.get(path, (req,res,next)=>{}`注册一个路由（get可以替换唯post/put等方法），支持命名路由（类似于vue-router）。**路由匹配的顺序同定义的顺序，默认情况下一旦命中就不会继续向下匹配**，但可以通过调用next方法来强制继续向下匹配
+路由是一种特殊的中间件，通过`app.get(path, (req,res,next)=>{})`注册一个路由（get可以替换唯post/put等方法），支持命名路由（类似于vue-router）。**路由匹配的顺序同定义的顺序，默认情况下一旦命中就不会继续向下匹配**，但**可以通过调用next方法来强制继续向下匹配**
 
 ```typescript
 app.get('/:id', (req, res, next)=>{
@@ -62,6 +66,8 @@ import userRouter from './router/user';
 app.use('/user', userRouter);
 ```
 
+
+
 ## 常用三方中间件
 
 `body-parser`可以新增`req.body`，将rawBody转换为objBody
@@ -81,7 +87,7 @@ import cookieParser = 'cookie-parser';
 app.use(cookieParser('secretKey'));
 ```
 
-`express-winston, winston`
+`express-winston, winston`，日志中间件
 
 `multer`用于上传文件的接受，通常配合post、put方法使用，可以在req对象上新增如下三个属性
 
