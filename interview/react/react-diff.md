@@ -29,7 +29,7 @@
 
 基于该前提，React **只会对树的同一层级节点进行比较**。如果发现跟老节点`key`相同的新新节点不存在，该老节点所在的整棵树都会被删除，避免进一步的比较
 
-![img](react.assets/0c08dbb6b1e0745780de4d208ad51d34_1440w.png)
+![img](react-diff.assets/0c08dbb6b1e0745780de4d208ad51d34_1440w.png)
 
 #### component diff
 
@@ -39,7 +39,7 @@
 
 对于组件相同的可复用两个节点，会默认对其所在子树执行 tree diff，但开发者可以通过`shouldComponentUpdate()`来编程式的决定是否要执行该 diff
 
-![img](react.assets/52654992aba15fc90e2dac8b2387d0c4_1440w.png)
+![img](react-diff.assets/52654992aba15fc90e2dac8b2387d0c4_1440w.png)
 
 #### element diff
 
@@ -110,7 +110,7 @@ function reconcileChildFibers(
 
 单节点 diff 其实就是在遍历`currentFirstChild`，逐个跟`element`对比，并最终选择【复用/舍弃并新建】的过程
 
-<img src="react.assets/diff.png" alt="diff" style="zoom: 50%;" />
+<img src="react-diff.assets/diff.png" alt="diff" style="zoom: 50%;" />
 
 对于原节点集当前遍历到的节点`child`（跟`element`比较），有如下节点复用的判断逻辑：
 
@@ -205,7 +205,7 @@ ___
 
 - 遍历结束后，检查`existingChildren`中是否还有记录，将剩余的 fiber 标记为删除
 
-![img](react.assets/c0aa97d996de5e7f1069e97ca3accfeb_1440w.png)
+![img](react-diff.assets/c0aa97d996de5e7f1069e97ca3accfeb_1440w.png)
 
 PS1：从移动操作可以推断，如果尾节点要移动到头节点位置，会使`lastPlacedIndex`直接变成最大值，导致所有节点都要移动，失去加速效果影响性能，尽量避免此类操作
 
