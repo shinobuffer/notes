@@ -157,7 +157,7 @@ function completeWork(
 }
 ```
 
-在`update`阶段，主要是调用`updateHostComponent()`处理 porps（回调Props、styleProps、childrenProps等），找出 props 的增量更新。在`updateHostComponent()`内部，被处理完的`props`会被赋值给`workInProgress.updateQueue`，并最终会在`commit阶段`被渲染在页面上
+在`update`阶段，主要是调用`updateHostComponent()`处理 props（回调Props、styleProps、childrenProps等），找出 props 的增量更新队列。在`updateHostComponent()`内部，被处理完的`props`会被赋值给`workInProgress.updateQueue`，并最终会在`commit阶段`被渲染在页面上
 
 ```typescript
 workInProgress.updateQueue = (updatePayload: any);
@@ -206,7 +206,7 @@ if (
 
 在整个`render阶段`的遍历的过程中，`beginWork()`和`completeWork()`是交替执行的，`beginWork()`会给部分节点打标记（`effectTag`），作为`commit阶段`执行`effect`（生命周期函数、DOM操作等）的依据
 
-在`commit阶段`如何找到这些有标记的节点成为关键问题，如果重新遍历一次树，这显然是很低效的。为了解决这个问题，`completWork()`在其上层函数`completeUnitWork()`中留了一手：
+在`commit阶段`如何找到这些有标记的节点成为关键问题，如果重新遍历一次树，这显然是很低效的。为了解决这个问题，`completeWork()`在其上层函数`completeUnitWork()`中留了一手：
 
 - 将当前节点现有的`effectList`拼接到父节点的`effectList`上
 - 如果当前节点有标记，把自身接到父节点的`effectList`上
@@ -215,7 +215,7 @@ if (
 >
 > 每个节点都有属于自己范围的`effectList`，`fiber.firstEffect`指定表头，`fiber.lastEffect`指定表尾，通过`fiber.nextEffect`访问下一个标记节点。节点的`effectList`表示为了更新当前组件，需要处理的节点顺序
 >
-> 父节点的`effectList`必定包含子节点的的`effectlist`，如父`effectList`为A->B->C，子`effectList`为A->B
+> 父节点的`effectList`必定包含子节点的的`effectList`，如父`effectList`为A->B->C，子`effectList`为A->B
 
 这样一波操作完成`render阶段`的整个遍历后，`workInProgress Fiber树`的根节点就会得到完整的`effectList`，在`commit阶段`只需遍历这条`effectList`即可执行所有`effect`
 
@@ -273,6 +273,21 @@ function completeUnitOfWork(unitOfWork: Fiber): void {
 }
 
 ```
+
+### 总结
+
+> `render`阶段：边遍历边构造`workInProgress Fiber树`的过程，期间`beginWork()`和`completeWork()`交替执行
+>
+> `beginWork()`：为【递】遍历到的`workInProgressFiber`节点创建、连接并返回子 Fiber 节点
+>
+> - `mount阶段`：创建新的子 Fiber 节点
+> - `update阶段`：尝试直接复用子`currentFiber`，如果不能直接复用，执行 Diff 尝试复用子`currentFiber`，顺便打标记`effectTag`
+>
+> `completeWork()`：为【归】遍历到的`workInProgressFiber`节点
+>
+> - `mount阶段`：为当前节点创建DOM，并将子孙DOM接到新创建的DOM；处理 props 更新
+> - `update阶段`：处理 props 更新
+> - 向父节点传递现有`effectList`，如果当前节点有标记，把自身也接到父节点的`effectList`上
 
 ### 参考
 

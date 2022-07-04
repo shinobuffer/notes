@@ -175,6 +175,22 @@ ReactDOM.render(<App/>, document.getElementById('root'));
 | <img src="react-fiber.assets/wipTreeUpdate.png" alt="wipTreeUpdate" style="zoom:100%;" /> | 1.更新触发新一轮 render 阶段，再次构建一个`workInProgress Fiber树`（图右），构建过程中可能复用`current Fiber树`（图左）对应的节点（是否复用由 diff 算法决定） |
 | <img src="react-fiber.assets/currentTreeUpdate.png" alt="currentTreeUpdate" style="zoom:100%;" /> | 2.构建完成后的`workInProgress Fiber树`在 commit 阶段被渲染上屏，然后让`fiberRootNode`的`current`指向`workInProgress Fiber树`，`workInProgress Fiber树`成为`current Fiber树`（图左） |
 
+### 总结
+
+> Fiber 的三层含义
+>
+> 1. 作为架构，新的`Reconciler`基于 Fiber 节点实现可中断的异步更新，称为`Fiber Reconciler`
+> 2. 作为静态数据结构，Fiber 节点对应着 ReactElement，记录了组件类型、对应DOM节点等信息，其实就相当于虚拟DOM
+> 3. 作为动态**工作单元**，Fiber 节点保存了本次更新中该组件改变的状态、要执行的工作
+
+>双缓存 Fiber 树
+>
+>- 当前屏幕上显示内容对应的 Fiber树 称为`current Fiber树`（其节点称为`currentFiber`）
+>- 正在内存中构建的 Fiber树 称为`workInProgress Fiber树`（其节点称为`workInProgressFiber`）
+>- `currentFiber`和`workInProgressFiber`可以通过`alternate`属性找到对方`current Fiber树`
+>- `workInProgress Fiber树`构建完成后交由`Renderer`渲染上屏，并转换为`current Fiber树`
+>- React 应用的根节点通过使`current`指针在不同 Fiber 树的`rootFiber`间切换来完成`current Fiber树`指向的切换
+
 ### 参考
 
 [React 技术揭秘](https://react.iamkasong.com/process/fiber.html)
