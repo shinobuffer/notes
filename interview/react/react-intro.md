@@ -30,7 +30,7 @@ React 老架构（15）分为两层：
 1. `Reconciler`（协调器）——负责找出变化的组件
 2. `Renderer`（渲染器）——负责将变化的组件渲染到页面上
 
-####  Reconciler（协调器）
+> **Reconciler（协调器）**
 
 在 React 中，可以通过`setState()`、`forceUpdate()`、`ReactDom.render()`等 API 触发更新
 
@@ -40,33 +40,35 @@ React 老架构（15）分为两层：
 - 将虚拟DOM和上次更新时的虚拟DOM对比，找出本次更新中变化的虚拟DOM
 - 通知`Renderer`将变化的虚拟DOM渲染到页面上
 
-#### Renderer（渲染器）
+> **Renderer（渲染器）**
 
 在每次更新发生时，`Renderer`接到`Reconciler`通知，根据底层平台进行不同的调用，将变化的组件渲染在当前宿主环境
 
 `Renderer`是架构中平台相关的部分，不同的平台会有不同的`Renderer`，通常以包的形式独立出来，比如`react-dom-renderer`负责在 H5 中渲染 DOM、`react-native-renderer`负责在 And/IOS 中渲染 Native 视图
 
-#### 老架构缺点
+___
+
+> 老架构缺点
 
 【stack reconciler】是 React 15 及更早的解决方案，在`Reconciler`中，组件在`mount`和`update`阶段会递归的更新子组件。由于是递归执行，所以更新一旦开始，中途就无法中断，如果耗时超过 16ms，交互就会卡顿
 
-为了解决这个痛点，React 在 16.0 重新实现了新的`Reconciler`，引入了`Fiber`架构，为的是用**可中断的异步更新**代替**同步的更新**
+为了解决这个痛点，React 在 16.3 重新实现了新的`Reconciler`，引入了`Fiber`架构，为的是用**可中断的异步更新**代替**同步的更新**
 
 ### React 新架构
 
-React 新架构（16+）相比之前多了一个`Scheduler`（调度器）
+React 新架构（16.3+）相比之前多了一个`Scheduler`（调度器）
 
 1. `Scheduler`（调度器）——调度任务的优先级，高优任务优先进入`Reconciler`
 2. `Reconciler`（协调器）——负责找出变化的组件
 3. `Renderer`（渲染器）——负责将变化的组件渲染到页面上
 
-#### Scheduler（调度器）
+> **Scheduler（调度器）**
 
 任务中断的判断标准之一是浏览器是否有剩余空闲时间，为此 React 需要一种机制让浏览器空闲时通知 React
 
 其实部分浏览器提供了`requestIdleCallback(callback)`API 来满足这个需要：浏览器会在空闲时调用回调，告诉开发着剩余空闲时间。但出于兼容性和稳定性的考虑，React 并没有使用，而是实现了功能更完备的`requestIdleCallback`polyfill，这个部分就是`Scheduler`，除了提供空闲时回调，还提供了多种调度优先级供任务设置
 
-#### Reconciler & Renderer
+> **New Reconciler & Renderer**
 
 在 React 16 中，更新工作从递归变成了可以中断的循环过程，每次进入工作循环前都会调用`shouldYield()`判断浏览器是否空闲。而能这样做的前提，是React 通过某种方案使得**更新工作可分解为增量单元**（后面 Fiber 架构会详细说明）
 
@@ -97,7 +99,7 @@ function workLoopConcurrent() {
 
 >老架构采用【stack reconciler】，递归的更新逐渐一旦开始便无法中断，可能占用时间过长导致卡顿
 >
->新架构实现 Fiber 架构【fiber reconciler】替代【stack reconciler】，让**可中断的异步更新**成为现实
+>新架构实现 Fiber 架构【fiber reconciler】替代【stack reconciler】，让**可中断的异步更新**成为现实，并且引入`Scheduler`实现优先级调度
 
 ### 参考
 
