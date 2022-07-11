@@ -151,18 +151,39 @@ Child.prototype.constructor = Child;
 
 【1】**Promise 初始化函数是立即同步执行的**
 
-【2】**Promise 的三个状态， `pending`、 `fulfilled` 和 `rejected`**
+- 初始化函数接收由 Promise 提供的 resolve、reject 函数
+- 如果初始化函数执行抛错，强制走 reject 逻辑，将错误作为 rejectReason
 
--  `pending` 状态可以切换到 `fulfilled` 或 `rejected` 状态，并产生`result`
-- 在 `fulfilled` 或者 `rejected` 状态，都不能迁移到其它状态
+【2】**Promise 的三个状态： `pending`、 `fulfilled` 和 `rejected`**
 
-【3】Promise Thenable（PromiseLike）
+- promise 被创建时初始状态为`pending`
+- promise 被 resolve 后，状态切换到`fulfilled`，并将 resolve 值`value`记录
+- promise 被 reject 后，状态切换到`rejected`，并将拒绝原因`reason`记录
+- 状态只能切换一次，resolve 和 reject 执行互斥
+- promise 状态发生变化后，需要异步按序执行`then`注册的回调
+
+【3】**Promise Thenable**（PromiseLike）
 
 - `Promise` 实例必须包含一个 `then` 方法，`then` 方法必须返回一个`Promise`实例
-- `then` 方法可以接受两个可选参数，`onFulfilled`, `onRejected` , `onFulfilled` 和 `onRejected` 如果是函数，必须最多执行一次
-- `then` 方法可以链式调用，每次注册一组 `onFulfilled` 和 `onRejected` 的 `callback`。它们如果被调用，必须按照注册顺序调用
+- `then` 方法接受两个可选回调函数：`onFulfilled`和 `onRejected` ，分别在当前 promise 被 resolve 和 reject 时被调用
+- 同一个 promise，`then` 方法可以多次调用：
+  - 如果当前 promise 状态为`pending`，将`onFulfilled` 和 `onRejected` 注册为回调等待状态变更时调用
+  - 如果当前 promise 状态为`fulfilled`/`rejected`，直接走回调处理
 
-【4】
 
+【4】**回调处理**
 
+- 根据当前 promise 的状态，决定走`fulfilled`路径，还是 `rejected`路径
+- 如果回调中的 `onFulfilled`/`onRejected` 是函数，将当前 promise 的`value`/`reason`作为入参调用，以函数返回值作为下游 promise 的 resolveValue/rejectReason；如果不是函数，直接将当前 promise 的`value`/`reason`作为下游 promise 的 resolveValue/rejectReason
+- 如果 `onFulfilled`/`onRejected` 执行过程中抛错，将错误作为下游 promise 的 rejectReason
+
+【5】**resolve 处理**
+
+- 如果 resolve 执行过程中捕捉到错误，promise 状态切换到`rejected`并将错误作为 rejectReason
+- 不能 resolve 自身，否则抛出 `TypeError` 异常
+- 如果 resolve 另外一个 promise，直接沿用该 promise 的`state`和`result`向下传递
+- 如果 resolve 一个 thenable，取出其`then`方法，封装为新的 promise 向下传递
+- 其他情况，promise 状态切换到`fulfilled`并将 resolve 的值作为 resolveValue
+
+具体实现见 [Promise 实现](https://github.com/Bersder/leetcode/blob/master/src/implementation/promise.ts)
 
