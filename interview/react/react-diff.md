@@ -194,15 +194,16 @@ ___
 
 在第一轮遍历出现【4】的情况下，需要对剩余的`newChildren`和`oldFibers`进行第二轮遍历来标记节点是否移动，这时`key`派上用场，建立`key->oldFiber`的映射`existingChildren`，方便在遍历`newChildren`时通过`key`找到对应的`oldFiber`进行比较
 
+【位置递增法】：通过判断位置（新节点在老节点中的位置）是否递增来判断当前节点是否需要移动，递增的不需要移动
+
 假设当前遍历节点对应的`oldFiber`（key相同）在`oldFibers`中的位置为`mountIndex`，并使用一个变量`lastPlacedIndex`来记录当最后一个可复用的节点在`oldFibers`中的位置（`lastPlacedIndex`初始值取决于第一轮遍历中最后一个可复用的节点在`oldFibers`中的位置），以此为参照物判断需不需要移动。现在开始遍历`newChildren`决定每个节点的具体操作：
 
 - 节点有对应的`oldFiber`（`key`在`existingChildren`有记录）
 
-  - 如果节点`mountIndex`大于`lastPlacedIndex`（相对靠右），不用移动，更新`lastPlacedIndex = max(lastPlacedIndex, mountIndex)`
-
-  - 如果节点`mountIndex`小于`lastPlacedIndex`（相对靠左），需要移动，将移动操作添加到差异队列中
+  - 如果节点`mountIndex`大于`lastPlacedIndex`（位置是递增的），不用移动，更新`lastPlacedIndex = max(lastPlacedIndex, mountIndex)`
+  - 如果节点`mountIndex`小于`lastPlacedIndex`（位置破坏了递增），需要移动，将移动操作添加到差异队列中
   - 最后将`key`记录从`existingChildren`中移除
-
+- 节点没有对应`oldFiber`（`key`在`existingChildren`没有记录），说明是新增节点，生成新 fiber 接上去并标记为新增
 - 遍历结束后，检查`existingChildren`中是否还有记录，将剩余的 fiber 标记为删除
 
 ![img](react-diff.assets/c0aa97d996de5e7f1069e97ca3accfeb_1440w.png)

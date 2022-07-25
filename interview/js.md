@@ -88,7 +88,7 @@ V8 引擎采用的是**【分代式垃圾回收】**（同样基于【标记整�
 - 【新生代】存活时间较短的对象放在这里，通常是新创建的对象
 - 【老生代】存活时间较长/空间占用大的对象放这里，通常是在新生代的垃圾回收中多次幸存对象
 
-<img src="js.assets/aa2d5ad1d89b4b7b919f20e4a5f8973a~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.webp" alt="aa2d5ad1d89b4b7b919f20e4a5f8973a~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0" style="zoom:50%;" />
+<img src="js.assets/aa2d5ad1d89b4b7b919f20e4a5f8973a.webp" alt="分代式垃圾回收" style="zoom:50%;" />
 
 【新生代垃圾回收】新生代被划分为【使用区】、【空闲区】两个区域。新创建的对象会放到使用区中，当使用区占用率到达阈值时，就会触发新生代的垃圾回收：
 

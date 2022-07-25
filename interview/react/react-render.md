@@ -1,6 +1,6 @@
-### Render 阶段
+### Render 阶段（Reconciler）
 
-> 构造`workInProgress Fiber树`的过程
+> 异步可中断的，构造`workInProgress Fiber树`的过程
 
 `render阶段`开始于`performSyncWorkOnRoot`或`performConcurrentWorkOnRoot`方法的调用。这取决于本次更新是同步更新还是异步更新，在异步更新中，会额外将`shouldYield()`作为循环条件，为的是在浏览器帧没有空闲时间时终止循环，等待下次空闲时再继续遍历
 
@@ -286,7 +286,7 @@ function completeUnitOfWork(unitOfWork: Fiber): void {
 > `completeWork()`：为【归】遍历到的`workInProgressFiber`节点
 >
 > - `mount阶段`：为当前节点创建DOM，并将子孙DOM接到新创建的DOM；处理 props 更新
-> - `update阶段`：处理 props 更新
+> - `update阶段`：处理 props 更新，收集`updateQueue`
 > - 向父节点传递现有`effectList`，如果当前节点有标记，把自身也接到父节点的`effectList`上
 
 ### 参考

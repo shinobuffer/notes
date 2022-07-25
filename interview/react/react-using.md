@@ -59,7 +59,7 @@ const ComponentA: React.FC = () => {
 
 下面是一个利用`useReducer`封装的请求数据的 hook
 
-```ts
+```typescript
 interface FetchData {
   loading: boolean;
   errorMsg: string;
@@ -163,7 +163,7 @@ React 的生命周期以 16.3（Fiber引入） 为分界线分为新老两种生
 
 React 引入了`getDerivedStateFromProps()`**静态函数**（限制开发者编写副作用代码）来接替上面不建议使用的`componentWillXXX()`，该函数可根据新的 props 和之前的 state 来在`render()`之前最后一次调整当前的 state
 
-```ts
+```typescript
 static getDerivedStateFromProps(nextProps, prevState) {
   //根据nextProps和prevState计算出预期的状态改变，返回结果会被送给setState
   // return newState
