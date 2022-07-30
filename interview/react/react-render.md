@@ -2,17 +2,19 @@
 
 > 异步可中断的，构造`workInProgress Fiber树`的过程
 
-`render阶段`开始于`performSyncWorkOnRoot`或`performConcurrentWorkOnRoot`方法的调用。这取决于本次更新是同步更新还是异步更新，在异步更新中，会额外将`shouldYield()`作为循环条件，为的是在浏览器帧没有空闲时间时终止循环，等待下次空闲时再继续遍历
+`render阶段`开始于`performSyncWorkOnRoot()`或`performConcurrentWorkOnRoot()`方法的调用。这取决于本次更新是同步更新还是异步更新
+
+在异步更新中，会额外将`shouldYield()`作为循环条件，`shouldYield()`是`Scheduler`提供的方法，该方法为当前的更新任务提供中断判断，在浏览器帧没有空闲时间时或有高优任务插队时阻塞循环，等待时机合适时再继续循环，实现`时间切片`
 
 ```typescript
-// performSyncWorkOnRoot会调用该方法
+// performSyncWorkOnRoot 会调用该方法
 function workLoopSync() {
   while (workInProgress !== null) {
     performUnitOfWork(workInProgress);
   }
 }
 
-// performConcurrentWorkOnRoot会调用该方法
+// performConcurrentWorkOnRoot 会调用该方法
 function workLoopConcurrent() {
   while (workInProgress !== null && !shouldYield()) {
     performUnitOfWork(workInProgress);
@@ -206,7 +208,7 @@ if (
 
 在整个`render阶段`的遍历的过程中，`beginWork()`和`completeWork()`是交替执行的，`beginWork()`会给部分节点打标记（`effectTag`），作为`commit阶段`执行`effect`（生命周期函数、DOM操作等）的依据
 
-在`commit阶段`如何找到这些有标记的节点成为关键问题，如果重新遍历一次树，这显然是很低效的。为了解决这个问题，`completeWork()`在其上层函数`completeUnitWork()`中留了一手：
+在`commit阶段`如何找到这些有标记的节点成为关键问题，如果重新遍历一次树，这显然是很低效的。为了解决这个问题，`completeWork()`在其上层函数`completeUnitWork()`完成`effectList`的向上收集：
 
 - 将当前节点现有的`effectList`拼接到父节点的`effectList`上
 - 如果当前节点有标记，把自身接到父节点的`effectList`上
@@ -217,7 +219,7 @@ if (
 >
 > 父节点的`effectList`必定包含子节点的的`effectList`，如父`effectList`为A->B->C，子`effectList`为A->B
 
-这样一波操作完成`render阶段`的整个遍历后，`workInProgress Fiber树`的根节点就会得到完整的`effectList`，在`commit阶段`只需遍历这条`effectList`即可执行所有`effect`
+在完成`render阶段`的整个遍历后，`workInProgress Fiber树`的根节点就会得到完整的`effectList`，在`commit阶段`只需遍历这条`effectList`即可执行所有`effect`
 
 ```typescript
 function completeUnitOfWork(unitOfWork: Fiber): void {
