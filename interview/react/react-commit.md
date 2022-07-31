@@ -106,11 +106,11 @@ ___
 遍历`effectList`并对每个节点调用`commitLayoutEffects()`，主要工作有二：
 
 1. 调用相关生命周期钩子和 hook
-   - 对于`ClassComponent`，根据是`mount`还是`update`调用`componentDidMount/componenteDidUpdate()`生命周期钩子；`this.setState()`的回调也会调用
-   - 对于`FunctionComponent`，**同步执行`useLayoutEffect`的回调，并异步调度`useEffect`**
+   - 对于`ClassComponent`，根据是`mount`还是`update`调用`componentDidMount/Update()`生命周期钩子；`this.setState()`的回调也会调用
+   - 对于`FunctionComponent`，**同步执行`useLayoutEffect`的回调，并根据依赖变化填充`useEffect`的`effetc`执行数组**，然后再次异步调度`useEffect`（注意：layout 阶段`useEffect`调度和 beforeMutation 阶段`useEffect`调度是互斥的，如果之前调度过，本次的调度会被跳过）
 2. 更新`ref`（commitAttachRef）
 
-【PS】current Fiber 树的切换发生在 mutation 阶段之后，layout 阶段之前，为的是能让
+【PS】current Fiber 树的切换发生在 mutation 阶段之后，layout 阶段之前。为的是能让 mutation 阶段的`componentWillUnmount()`能够获取到卸载前的实例，让 layout 阶段的`componentDidMount/Update()`能够获取到更新后的实例
 
 ```typescript
 // mutation 阶段
@@ -143,7 +143,7 @@ root.current = finishedWork;
 >
 > 1. 调用相关生命周期钩子和 hook
 >    - 类组件调用`componentDidMount()`或`componenteDidUpdate()`，及 setState 回调
->    - 函数组件**同步执行`useLayoutEffect`的回调，并异步调度`useEffect`**
+>    - 函数组件**同步执行`useLayoutEffect`的回调，根据依赖变化填充`useEffect`的`effetc`执行数组**
 > 2. 更新`ref`（commitAttachRef）
 
 ### 参考

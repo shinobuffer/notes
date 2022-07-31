@@ -84,16 +84,13 @@ function reconcileChildFibers(
 
   if (typeof newChild === 'string' || typeof newChild === 'number') {
     // 【情况1】调用 reconcileSingleTextNode 处理
-    // ...省略
   }
 
   if (isArray(newChild)) {
     // 【情况2】调用 reconcileChildrenArray 处理
-    // ...省略
   }
 
   // 一些其他情况调用处理函数
-  // ...省略
 
   // 以上都没有命中，删除节点
   return deleteRemainingChildren(returnFiber, currentFirstChild);

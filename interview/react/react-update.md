@@ -1,3 +1,5 @@
+> 本文更新流程基于类组件展开
+
 ### 更新流程
 
 React 每产生一个更新，就会把更新结构化的记录在 fiber 上，然后调度执行更新任务，流程如下：
@@ -68,6 +70,7 @@ enqueueSetState(inst, payload, callback) {
 这里重点讲下【步骤3】产生的`update`是个怎样的结构，以及他是怎样加到`fiber.updateQueue`上的
 
 ```typescript
+// 类组件的 update 结构
 const update = {
   // 任务时间
   eventTime,
@@ -90,6 +93,7 @@ const update = {
 一个类组件可以通过多次调用`setState()`来产生多个`update`，这些`update`按调用顺序连接形成链表结构记录在对应 fiber 的`updateQueue`属性中
 
 ```typescript
+// 类组件的 updateQueue 结构
 const updateQueue: UpdateQueue<State> = {
   // 本次更新任务的初始 state
   baseState: fiber.memoizedState,
