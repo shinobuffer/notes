@@ -212,110 +212,108 @@ mark .md-meta { color: rgb(0, 0, 0); }
 /* open-sans-700italic - latin-ext_latin */
 
 :root {
-    --title-color: #8064a9;
-    --text-color: #444444;
-    --light-text-color: #666666;
-    --lighter-text-color: #888888;
-    --link-color: #2aa899;
-    --code-color: #745fb5;
-    --shadow-color: #eee;
-    --border-quote: rgba(116, 95, 181, 0.2);
-    --border-quote-grey: #c8c8c8;
-    --border: #e7e7e7;
-    --link-bottom: #bbb;
-    --shadow: 3px 3px 10px var(--shadow-color);
-    --inline-code-bg: #f4f2f9;
-    --header-weight: normal;
-    --side-bar-bg-color: #fafafa;
-    --control-text-color: var(var(--light-text-color));
-    --active-file-text-color: var(--title-color);
-    --active-file-bg-color: var(--shadow-color);
-    --item-hover-bg-color: var(--shadow-color);
-    --active-file-border-color: var(var(--title-color));
-    --base-font: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    --title-font: "EB Garamond", "Source Sans Pro", serif;
-    --monospace: Courier, Monospace !important;
+  --title-color: #8064a9;
+  --text-color: #444444;
+  --light-text-color: #666666;
+  --lighter-text-color: #888888;
+  --link-color: #2aa899;
+  --code-color: #745fb5;
+  --shadow-color: #eee;
+  --border-quote: rgba(116, 95, 181, 0.2);
+  --border-quote-grey: #c8c8c8;
+  --border: #e7e7e7;
+  --link-bottom: #bbb;
+  --shadow: 3px 3px 10px var(--shadow-color);
+  --inline-code-bg: #f4f2f9;
+  --header-weight: normal;
+  --side-bar-bg-color: #fafafa;
+  --control-text-color: var(var(--light-text-color));
+  --active-file-text-color: var(--title-color);
+  --active-file-bg-color: var(--shadow-color);
+  --item-hover-bg-color: var(--shadow-color);
+  --active-file-border-color: var(var(--title-color));
+  --base-font: "Noto Sans CJK SC", "Open Sans", "Clear Sans", "Helvetica Neue",
+    Helvetica, Arial, sans-serif;
+  --title-font: "EB Garamond", "Source Sans Pro", serif;
+  --monospace: "Fira Code", Courier, Monospace !important;
 }
-
 
 /* 打印 */
 
 @media print {
-    html {
-        font-size: 0.9rem;
-    }
-    table,
-    pre {
-        page-break-inside: avoid;
-    }
-    pre {
-        word-wrap: break-word;
-    }
-    #write {
-        max-width: 100%;
-    }
-    @page {
-        size: A3;
-        /* PDF output size */
-        margin-left: 0;
-        margin-right: 0;
-    }
+  html {
+    font-size: 0.9rem;
+  }
+  table,
+  pre {
+    page-break-inside: avoid;
+  }
+  pre {
+    word-wrap: break-word;
+  }
+  #write {
+    max-width: 100%;
+  }
+  @page {
+    size: A3;
+    /* PDF output size */
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
 
 html {
-    font-size: 16px;
-    -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
-    text-rendering: optimizelegibility;
-    -webkit-font-smoothing: initial;
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-rendering: optimizelegibility;
+  -webkit-font-smoothing: initial;
 }
 
 body {
-    color: var(--text-color);
-    -webkit-font-smoothing: antialiased;
-    line-height: 1.6;
-    letter-spacing: 0;
-    overflow-x: hidden;
+  color: var(--text-color);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+  letter-spacing: 0;
+  overflow-x: hidden;
 }
-
 
 /* 页边距 和 页面大小 */
 
 #write {
-    font-family: var(--base-font);
-    /* max-width: 914px; */
-    margin: 0 auto;
-    padding: 1rem 4rem;
-    padding-bottom: 100px;
+  font-family: var(--base-font);
+  /* max-width: 914px; */
+  margin: 0 auto;
+  padding: 1rem 4rem;
+  padding-bottom: 100px;
 }
 
 #write p {
-    line-height: 1.6rem;
-    word-spacing: 0.05rem;
+  line-height: 1.6rem;
+  word-spacing: 0.05rem;
 }
 
-body>*:first-child {
-    margin-top: 0 !important;
+body > *:first-child {
+  margin-top: 0 !important;
 }
 
-body>*:last-child {
-    margin-bottom: 0 !important;
+body > *:last-child {
+  margin-bottom: 0 !important;
 }
-
 
 /* Link 链接 */
 
 a {
-    color: var(--link-color);
-    text-decoration: none;
+  color: var(--link-color);
+  text-decoration: none;
 }
 
 #write a {
-    border-bottom: 1px solid var(--link-bottom);
+  border-bottom: 1px solid var(--link-bottom);
 }
 
 .md-content {
-    color: var(--light-text-color);
+  color: var(--light-text-color);
 }
 
 h1,
@@ -324,60 +322,60 @@ h3,
 h4,
 h5,
 h6 {
-    position: relative;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    font-weight: var(--header-weight);
-    line-height: 1.3;
-    cursor: text;
-    color: var(--title-color);
-    font-family: var(--title-font);
+  position: relative;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: var(--header-weight);
+  line-height: 1.3;
+  cursor: text;
+  color: var(--title-color);
+  font-family: var(--title-font);
 }
 
 h1 {
-    text-align: center;
-    margin-bottom: 2rem;
-    line-height: 1.5;
+  text-align: center;
+  margin-bottom: 2rem;
+  line-height: 1.5;
 }
 
 h1:after {
-    content: "";
-    display: block;
-    margin: 0.2rem auto 0;
-    width: 6rem;
-    height: 2px;
-    border-bottom: 2px solid var(--title-color);
+  content: "";
+  display: block;
+  margin: 0.2rem auto 0;
+  width: 6rem;
+  height: 2px;
+  border-bottom: 2px solid var(--title-color);
 }
 
 h2 {
-    padding-left: 0.4em;
-    border-left: 0.4em solid var(--title-color);
-    border-bottom: 1px solid var(--title-color);
+  padding-left: 0.4em;
+  border-left: 0.4em solid var(--title-color);
+  border-bottom: 1px solid var(--title-color);
 }
 
 h1 tt,
 h1 code {
-    font-size: inherit;
+  font-size: inherit;
 }
 h2 tt,
 h2 code {
-    font-size: inherit;
+  font-size: inherit;
 }
 h3 tt,
 h3 code {
-    font-size: inherit;
+  font-size: inherit;
 }
 h4 tt,
 h4 code {
-    font-size: inherit;
+  font-size: inherit;
 }
 h5 tt,
 h5 code {
-    font-size: inherit;
+  font-size: inherit;
 }
 h6 tt,
 h6 code {
-    font-size: inherit;
+  font-size: inherit;
 }
 
 p,
@@ -386,157 +384,147 @@ ul,
 ol,
 dl,
 table {
-    margin: 0.8em 0;
+  margin: 0.8em 0;
 }
-
 
 /* horizontal rule */
 
 hr {
-    margin: 1.5em auto;
-    border-top: 1px solid var(--border);
+  margin: 1.5em auto;
+  border-top: 1px solid var(--border);
 }
-
 
 /* 列表 */
 
-li>ol,
-li>ul {
-    margin: 0 0;
+li > ol,
+li > ul {
+  margin: 0 0;
 }
 
 li p.first {
-    display: inline-block;
+  display: inline-block;
 }
 
 ul,
 ol {
-    padding-left: 2rem;
+  padding-left: 2rem;
 }
 
 ul:first-child,
 ol:first-child {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 ul:last-child,
 ol:last-child {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 #write ol li,
 ul li {
-    padding-left: 0.1rem;
+  padding-left: 0.1rem;
 }
-
 
 /* 引用 */
 
 blockquote {
-    border-left: 0.3rem solid var(--border-quote);
-    padding-left: 1em;
-    font-family: var(--base-font);
+  border-left: 0.3rem solid var(--border-quote);
+  padding-left: 1em;
+  font-family: var(--base-font);
 }
-
 
 /* 表格 */
 
 table {
-    margin-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
 }
 
 table th,
 table td {
-    padding: 8px;
-    line-height: 1.25rem;
-    vertical-align: middle;
-    border: 1px solid #ddd;
+  padding: 8px;
+  line-height: 1.25rem;
+  vertical-align: middle;
+  border: 1px solid #ddd;
 }
 
 table th {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 table thead th {
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
 table tr:nth-child(2n),
 thead {
-    background-color: #fcfcfc;
+  background-color: #fcfcfc;
 }
-
 
 /* 粗体 */
 
 #write strong {
-    padding: 0 2px;
-    font-weight: bold;
+  padding: 0 2px;
+  font-weight: bold;
 }
-
 
 /* inline code */
 code,
 tt {
-    padding: 2px 4px;
-    border-radius: 0.3rem;
-    font-family: var(--monospace);
-    font-size: 0.9rem;
-    color: var(--code-color);
-    background-color: var(--inline-code-bg);
-    margin: 0 2px;
+  padding: 2px 4px;
+  border-radius: 0.3rem;
+  font-family: var(--monospace);
+  font-size: 0.9rem;
+  color: var(--code-color);
+  background-color: var(--inline-code-bg);
+  margin: 0 2px;
 }
 
 #write .md-footnote {
-    color: var(--code-color);
-    background-color: var(--inline-code-bg);
+  color: var(--code-color);
+  background-color: var(--inline-code-bg);
 }
-
 
 /* highlight. */
 
 #write mark {
-    background: rgb(255, 255, 196);
-    color: var(--text-color);
+  background: rgb(255, 255, 196);
+  color: var(--text-color);
 }
 
 #write del {
-    padding: 1px 2px;
+  padding: 1px 2px;
 }
 
-.md-task-list-item>input {
-    margin-left: -1.3em;
+.md-task-list-item > input {
+  margin-left: -1.3em;
 }
 
 #write pre.md-meta-block {
-    padding: 1rem;
-    font-size: 85%;
-    line-height: 1.45;
-    background-color: #f7f7f7;
-    border: 0;
-    border-radius: 3px;
-    color: #777777;
-    margin-top: 0 !important;
+  padding: 1rem;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f7f7f7;
+  border: 0;
+  border-radius: 3px;
+  color: #777777;
+  margin-top: 0 !important;
 }
 
-.mathjax-block>.code-tooltip {
-    bottom: 0.375rem;
+.mathjax-block > .code-tooltip {
+  bottom: 0.375rem;
 }
-
 
 /* 图片 */
 
-.md-image>.md-meta {
-    border-radius: 3px;
-    font-family: var(--monospace);
-    padding: 2px 0 0 4px;
-    font-size: 0.9em;
-    color: inherit;
+.md-image > .md-meta {
+  border-radius: 3px;
+  font-family: var(--monospace);
+  padding: 2px 0 0 4px;
+  font-size: 0.9em;
+  color: inherit;
 }
 
-
 /* 图片靠左显示 */
-
 
 /* p .md-image:only-child {
   width: auto;
@@ -544,65 +532,59 @@ tt {
   margin-left: 2rem;
 } */
 
-
 /* 写![shadow-...]() 显示图片阴影 */
 
 img[alt|="shadow"] {
-    box-shadow: var(--shadow);
+  box-shadow: var(--shadow);
 }
-
 
 /* TOC */
 
 #write a.md-toc-inner {
-    line-height: 1.6;
-    white-space: pre-line;
-    border-bottom: none;
-    color: var(--light-text-color);
-    font-size: 0.9rem;
+  line-height: 1.6;
+  white-space: pre-line;
+  border-bottom: none;
+  color: var(--light-text-color);
+  font-size: 0.9rem;
 }
 
 .md-toc-h1 .md-toc-inner {
-    margin-left: 0;
-    font-weight: normal;
+  margin-left: 0;
+  font-weight: normal;
 }
 
 header,
 .context-menu,
 .megamenu-content,
 footer {
-    font-family: var(--base-font);
+  font-family: var(--base-font);
 }
 
 .file-node-content:hover .file-node-icon,
 .file-node-content:hover .file-node-open-state {
-    visibility: visible;
+  visibility: visible;
 }
 
 .md-lang {
-    color: #b4654d;
+  color: #b4654d;
 }
 
 .html-for-mac .context-menu {
-    --item-hover-bg-color: #e6f0fe;
+  --item-hover-bg-color: #e6f0fe;
 }
 
-
 /* Code fences */
-
 
 /* border, bg, font */
 
 .md-fences {
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    background: #fdfdfd !important;
-    font-size: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: #fdfdfd !important;
+  font-size: 0.9rem;
 }
 
-
 /* 代码框阴影 */
-
 
 /* #write pre.md-fences {
   display: block;
@@ -611,136 +593,134 @@ footer {
 } */
 
 .cm-s-inner .cm-variable {
-    color: var(--text-color);
+  color: var(--text-color);
 }
 
 .cm-s-inner {
-    padding: 0.25rem;
-    border-radius: 0.25rem;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
 }
 
 .cm-s-inner.CodeMirror,
 .cm-s-inner .CodeMirror-gutters {
-    color: #3a3432 !important;
-    border: none;
+  color: #3a3432 !important;
+  border: none;
 }
 
 .cm-s-inner .CodeMirror-gutters {
-    color: #6d8a88;
+  color: #6d8a88;
 }
 
 .cm-s-inner .CodeMirror-linenumber {
-    padding: 0 0.1rem 0 0.3rem;
-    color: #b8b5b4;
+  padding: 0 0.1rem 0 0.3rem;
+  color: #b8b5b4;
 }
 
 .cm-s-inner .CodeMirror-matchingbracket {
-    text-decoration: underline;
-    color: #a34e8f !important;
+  text-decoration: underline;
+  color: #a34e8f !important;
 }
 
 #fences-auto-suggest .active {
-    background: #ddd;
+  background: #ddd;
 }
 
 .cm-s-inner span.cm-comment {
-    color: #9daab6;
+  color: #9daab6;
 }
 
 .cm-s-inner span.cm-builtin {
-    color: #0451a5;
+  color: #0451a5;
 }
-
 
 /* language tip */
 
 #write .code-tooltip {
-    border: 1px solid var(--border);
+  border: 1px solid var(--border);
 }
 
 .auto-suggest-container {
-    border-color: #b4b4b4;
+  border-color: #b4b4b4;
 }
 
 .auto-suggest-container .autoComplt-hint.active {
-    background: #b4b4b4;
-    color: inherit;
+  background: #b4b4b4;
+  color: inherit;
 }
-
 
 /* task list */
 
-#write .md-task-list-item>input {
-    -webkit-appearance: initial;
-    display: block;
-    position: absolute;
-    border: 1px solid #b4b4b4;
-    border-radius: 0.2rem;
-    margin-top: 0.3rem;
-    height: 1rem;
-    width: 1rem;
-    transition: background 0.3s;
+#write .md-task-list-item > input {
+  -webkit-appearance: initial;
+  display: block;
+  position: absolute;
+  border: 1px solid #b4b4b4;
+  border-radius: 0.2rem;
+  margin-top: 0.3rem;
+  height: 1rem;
+  width: 1rem;
+  transition: background 0.3s;
 }
 
-#write .md-task-list-item>input:focus {
-    outline: none;
-    box-shadow: none;
+#write .md-task-list-item > input:focus {
+  outline: none;
+  box-shadow: none;
 }
 
-#write .md-task-list-item>input:hover {
-    background: #ddd;
+#write .md-task-list-item > input:hover {
+  background: #ddd;
 }
 
-#write .md-task-list-item>input[checked]::before {
-    content: "";
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    height: 60%;
-    width: 2px;
-    transform: rotate(40deg);
-    background: #333;
+#write .md-task-list-item > input[checked]::before {
+  content: "";
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  height: 60%;
+  width: 2px;
+  transform: rotate(40deg);
+  background: #333;
 }
 
-#write .md-task-list-item>input[checked]::after {
-    content: "";
-    position: absolute;
-    top: 46%;
-    left: 25%;
-    height: 30%;
-    width: 2px;
-    transform: rotate(-40deg);
-    background: #333;
+#write .md-task-list-item > input[checked]::after {
+  content: "";
+  position: absolute;
+  top: 46%;
+  left: 25%;
+  height: 30%;
+  width: 2px;
+  transform: rotate(-40deg);
+  background: #333;
 }
 
-#write .md-task-list-item>p {
-    transition: color 0.3s, opacity 0.3s;
+#write .md-task-list-item > p {
+  transition: color 0.3s, opacity 0.3s;
 }
 
-#write .md-task-list-item.task-list-done>p {
-    color: #b4b4b4;
-    text-decoration: line-through;
+#write .md-task-list-item.task-list-done > p {
+  color: #b4b4b4;
+  text-decoration: line-through;
 }
 
-#write .md-task-list-item.task-list-done>p>.md-emoji {
-    opacity: 0.5;
+#write .md-task-list-item.task-list-done > p > .md-emoji {
+  opacity: 0.5;
 }
 
-#write .md-task-list-item.task-list-done>p>.md-link>a {
-    opacity: 0.6;
+#write .md-task-list-item.task-list-done > p > .md-link > a {
+  opacity: 0.6;
 }
-
 
 /* sidebar */
 
 #typora-sidebar,
 .typora-node #typora-sidebar {
-    box-shadow: 3px 0px 10px var(--shadow-color);
+  box-shadow: 3px 0px 10px var(--shadow-color);
 }
 
 .sidebar-content-content {
-    font-size: 0.9rem;
-}@import "";
+  font-size: 0.9rem;
+}
+@import "";
 :root {
   --title-color: var(--text-color);
   --link-color: var(--light-text-color);
@@ -757,8 +737,9 @@ footer {
 </style><title>简兆英_前端_简历</title>
 </head>
 <body class='typora-export'><div class='typora-export-content'>
-<div id='write'  class=''><h2 id='简兆英--前端开发工程师'><span>简兆英  </span><small style="color:#888"><span>前端开发工程师</span></small></h2><p><span>男 | 23 | 1.5 年经验 | 暨南大学 | 软件工程 | 本科 | 13823468874 | </span><a href='mailto:oshinonya@outlook.com' target='_blank' class='url'>oshinonya@outlook.com</a></p><h2 id='工作经历项目经历'><span>工作经历/项目经历</span></h2><blockquote><p><strong><span>2020.09～2020.12、2021.07～2022.07 腾讯科技有限公司</span></strong><span>——前端开发工程师</span></p><p><span>参与QQ浏览器小说业务开发，主要投入在新老项目的开发、优化、重构和代码 CR 工作</span>
+<div id='write'  class=''><h2 id='简兆英--前端开发工程师'><span>简兆英  </span><small style="color:#888"><span>前端开发工程师</span></small></h2><blockquote><p><span>基本信息：男 | 23 | 1.5 年经验 | 13823468874 | </span><a href='mailto:oshinonya@outlook.com' target='_blank' class='url'>oshinonya@outlook.com</a>
+<span>教育经历：暨南大学 | 软件工程 | 本科</span></p></blockquote><h2 id='工作经历项目经历'><span>工作经历/项目经历</span></h2><blockquote><p><strong><span>2020.09～2020.12、2021.07～2022.07 腾讯科技有限公司</span></strong><span>——前端开发工程师</span></p><p><span>参与QQ浏览器小说业务开发，包括 RN、H5、Node 项目的开发、优化、重构和代码 CR 工作</span>
 <span>参与团队项目技术选型，公共库维护，脚手架搭建等基建工作</span>
-<span>作为核心成员参与小说书架、个人中心大型全新项目开发</span></p></blockquote><h4 id='小说新书架\n202111～202207-｜-tshippy类 rnrematch'><span>小说新书架</span><small style="color:#888;float:right"><span>2021.11～2022.07 ｜ TS、Hippy(类 RN)、rematch</span></small></h4><p><span>小说主场景之一，重交互逻辑，提供正反选批量操作、分组、置顶、筛选等功能</span></p><ul><li><span>参与项目搭建和选型，</span><strong><span>全面拥抱函数式组件和 hooks</span></strong><span>，并选择 TS 友好的 rematch 作为状态管理方案</span></li><li><span>负责主要的交互逻辑：</span><strong><span>基于二进制掩码实现的编辑态系统；手势事件差异的屏蔽层（统一坐标系）；弹窗逻辑的抽象、复用和集中管理</span></strong></li><li><span>维护书架不同实体的</span><strong><span>原子操作、局部刷新</span></strong><span>逻辑</span></li></ul><h4 id='小说频道性能优化\n202204～202205-｜-tshippy类-rn'><span>小说频道性能优化</span><small style="color:#888;float:right;"><span>2022.04～2022.05 ｜ TS、Hippy(类 RN)</span></small></h4><p><span>小说频道历史包袱重，开发维护难，首屏加载、渲染缓慢</span></p><ul><li><span>设计实现通用打点工具库，补齐性能上报缺失，量化性能指标，分析性能瓶颈并制定优化方案</span></li><li><span>着重在</span><strong><span>异步阻塞</span></strong><span>、</span><strong><span>包体积</span></strong><span>、</span><strong><span>CPU/内存</span></strong><span>三个方向上优化，取得【入口文件包大小减小 25%，平均首帧耗时降低 20+%】成效</span></li></ul><h4 id='小说场景无障碍适配方案\n202203～202203-｜-tshippy类-rn'><span>小说场景无障碍适配方案</span><small style="color:#888;float:right"><span>2022.03～2022.03 ｜ TS、Hippy(类 RN)</span></small></h4><p><span>为方便老年人阅读，在开启“关怀模式”后，放大字体和部分图片、提升颜色对比度以维持可阅读性</span></p><ul><li><strong><span>以代理模式为核心设计实现兼容 StyleSheet 的工具类</span></strong><span>，减少代码侵入性的同时提供定制扩展能力；配合惰性计算和计算缓存提升性能</span></li><li><span>使用该方案可避免编写两份相似样式和在 render 函数中编写大量动态样式判断逻辑，</span><strong><span>极大降低无障碍适配成本</span></strong></li></ul><hr /><blockquote><p><span>其他项目</span></p></blockquote><ul><li><p><span>【个人博客全栈】项目地址：</span><a href='https://github.com/Bersder/Von'><span>https://github.com/Bersder/Von</span></a><span> 项目预览：</span><a href='https://oshinonya.com'><span>https://oshinonya.com</span></a><span> </span></p><ul><li><span>个人执念和兴趣产物，自造轮子，一人独自全栈开发，更新，维护</span></li><li><span>前端 Vue 开发，Nuxt 实现 SSR，适配双端；后端 PHP + MariaDB + Python 数据采集</span></li></ul></li><li><p><span>【小说H5/接入服务】：参与小说 H5 页面开发，探索新技术的使用（Vue3、Nuxt3、pinia）；参与小说中间层 nodejs 开发</span></p></li><li><p><span>【微页面脚手架】：基于 yeoman 开发，可提供不同的开发方案，快速创建上手即用的项目，并集成司内 CI/CD 实现快速部署</span></p></li></ul><h2 id='技能'><span>技能</span></h2><ul><li><span>熟练使用 Typescript、React 进行开发，了解相关实现原理；Vue 次之</span></li><li><span>熟悉 React Native 跨端开发；工作之余开发过一段时间 Flutter，熟悉 Dart</span></li><li><span>上手过一段时间并掌握：Node、MySQL、PHP、Python、Nginx</span></li><li><span>掌握基本计算机网络和操作系统概念</span></li></ul><h2 id='自我评价'><span>自我评价</span></h2><ul><li><span>理科男一个，只要闲下来，不是在折腾新东西就是在折腾新东西的路上</span></li><li><span>轻微强迫症一个，总想尽善尽美，对代码质量有要求</span></li><li><span>二次元一个，人畜无害</span></li></ul></div></div>
+<span>作为核心成员参与小说书架、个人中心大型全新项目的开发和维护</span></p></blockquote><h5 id='小说新书架small-stylecolor888floatright\n202111～202207-｜-tshippy类 rnrematch\nsmall'><span>小说新书架</span><small style="color:#888;float:right"><span>2021.11～2022.07 ｜ TS、Hippy(类 RN)、rematch</span></small></h5><p><font color='#999'><span>小说主场景之一，有着非常重的交互逻辑和复杂的数据逻辑，提供正反选批量操作、分组、置顶、筛选等功能</span></font></p><ul><li><span>逼近 React 的最佳实践，全面拥抱函数式组件和 hooks，选择  rematch(redux) 作为状态管理方案</span></li><li><span>设计实现交互界面三大核心：基于二进制位实现的编辑态系统；手势事件差异的屏蔽层；弹窗逻辑的抽象、复用和集中管理</span></li><li><span>抽象书架数据结构，实现 10+ 种操作原子化和 20+ 种局部刷新优化；通过策略模式设计实现书籍、分组等 8 种不同类型实体的操作</span></li></ul><h5 id='小说频道首屏性能优化\n202204～202205-｜-tshippy类-rn'><span>小说频道首屏性能优化</span><small style="color:#888;float:right;"><span>2022.04～2022.05 ｜ TS、Hippy(类 RN)</span></small></h5><p><font color='#999'><span>小说频道历史包袱重，开发维护难，首屏加载、渲染缓慢，急需优化</span></font></p><ul><li><span>设计实现通用打点工具库，补齐性能上报缺失，量化性能指标</span></li><li><span>分析性能瓶颈并制定优化方案，在异步阻塞、包体积、CPU/内存三个方向上优化，通过接口合并、懒加载等策略，取得「入口文件包大小减小 25%，平均首帧耗时降低 25+%」成效</span></li></ul><h5 id='rn-无障碍适配方案\n202203～202203-｜-tshippy类-rn'><span>RN 无障碍适配方案</span><small style="color:#888;float:right"><span>2022.03～2022.03 ｜ TS、Hippy(类 RN)</span></small></h5><p><font color='#999'><span>为方便老年人阅读，在开启“关怀模式”后，启用另一套样式，放大字体和部分图片、提升颜色对比度以维持可阅读性</span></font></p><ul><li><span>以代理模式为核心设计实现兼容 StyleSheet 的工具类，减少代码侵入性的同时提供定制扩展能力；配合惰性计算和计算缓存提升性能</span></li><li><span>使用该方案可避免编写两份相似样式和在 render 函数中编写大量动态样式判断逻辑，极大降低无障碍适配成本</span></li></ul><h5 id='小说前端接入服务\n202108～202203-｜-tsegg'><span>小说前端接入服务</span><small style="color:#888;float:right"><span>2021.08～2022.03 ｜ TS、Egg</span></small></h5><p><font color='#999'><span>聚合后台基础服务接口，将数据灵活转换和划分成前端视图理解的形式，并在前端侧提供动态控制能力</span></font></p><ul><li><span>维护 50+ 接口，通过合理分层，实现 service 层的抽象复用</span></li><li><span>支持小说频道 tab 的动态下发能力，通过管道模式分解 15+ 种下发策略，实现职责单一和高扩展性</span></li><li><span>支持小说频道首屏弹窗动态下发能力</span></li></ul><hr /><blockquote><p><span>其他项目</span></p></blockquote><ul><li><p><span>「微页面脚手架」：可基于不同的开发方案（SSR/CSR等）快速创建项目，并集成司内 CI/CD 实现快速部署</span></p></li><li><p><span>「个人博客全栈」项目地址：</span><a href='https://github.com/Bersder/Von'><span>https://github.com/Bersder/Von</span></a><span> 项目预览：</span><a href='https://oshinonya.com'><span>https://oshinonya.com</span></a><span> </span></p><ul><li><span>学生时代个人执念和兴趣产物，自造轮子，一人独自全栈开发，更新，维护</span></li><li><span>前端 Vue 开发，Nuxt 实现 SSR，适配双端；后端 PHP + MariaDB + Python 数据采集</span></li></ul></li></ul><h2 id='技能'><span>技能</span></h2><ul><li><span>熟练使用 Typescript、HTML5、CSS3、React 进行开发，理解相关实现原理</span></li><li><span>熟悉 React Native 跨端开发；工作之余也开发过一段时间 Flutter</span></li><li><span>熟悉前端工程化、模块化工具 webpack 使用；工作上使用过并掌握 Vue、Nodejs、MySQL</span></li><li><span>熟悉基本计算机网络和操作系统概念</span></li></ul><h2 id='自我评价'><span>自我评价</span></h2><ul><li><span>理科男一个，只要闲下来，不是在折腾新东西就是在折腾新东西的路上</span></li><li><span>轻微强迫症一个，总想尽善尽美，对代码质量有要求</span></li><li><span>二次猿一个，人畜无害</span></li></ul></div></div>
 </body>
 </html>
