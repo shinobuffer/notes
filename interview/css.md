@@ -27,6 +27,50 @@
 
 - 两侧浮动/绝对定位，中间 margin 让位
 
+#### Sticky-footer 方案
+
+footer 固定高度方案A
+
+- html、body 去除内外边距，设高度 100%
+- 容器设置`min-height: 100%`，至少撑满屏幕
+- 内容区通过`padding-bottom: footerHeight`让位给 footer
+- footer 通过绝对定位贴容器底
+
+```html
+<div class="container">
+  <div class="header"></div>
+  <div class="content">内容区</div>
+  <div class="footer">我要贴底</div>
+</div>
+```
+
+footer 固定高度方案B
+
+- 前三步同方案A
+- footer 相对定位，通过`top/margin-top: -footerHeight`偏移到上去
+
+```html
+<div class="container">
+  <div class="header"></div>
+  <div class="content">内容区</div>
+</div>
+<div class="footer">我要贴底</div>
+```
+
+footer 不固定方案
+
+- html、body 去除内外边距，设高度 100%
+- 容器 flex-column 布局，设置`min-height: 100%`，至少撑满屏幕
+- 内容区设置`flex: 1`尽可能扩大
+
+```html
+<div class="container">
+  <div class="header"></div>
+  <div class="content">内容区</div>
+	<div class="footer">我要贴底</div>  
+</div>
+```
+
 #### 隐藏元素方案
 
 - `display: none`，不占据空间（直接在 render-tree 上消失）、不响应事件、触发**回流和重绘**

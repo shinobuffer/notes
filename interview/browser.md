@@ -57,9 +57,10 @@ LocalStorage 和 SessionStorage 同样收到同源策略的限制，如果需要
 根据具体实现分为 Hash 路由和 History 路由
 
 - 【Hash 路由】使用 URL 的 hash 部分来承载 path 和 query，并通过`hashchange`事件监听 hash 的变化
-  - 锚点功能冲突
+  - 锚点功能冲突；seo 不友好
   - 服务端无法获取 hash 中的 path 和 query
 - 【History 路由】利用浏览器的 History API（`pushState/replaceState/go()`）操作历史记录栈，并通过`popstate`事件监听历史记录栈的变化
+  - 需要服务端配置，将所有路径指向根文件
 
 ### 浏览器渲染流程
 
