@@ -1,3 +1,10 @@
+##### hippy 原理
+
+分别基于 React-reconciler、和 Vue-createRender 实现自定义渲染器，支持上层使用 React/Vue 进行编写
+
+Hippy 自己实现了类似React Native 中的 Fabric 架构，中间层使用 C++ HippyCore 负责抹平平台差异性和提供高性能模块，原理是通过`internalBinding`直接共享 JS 和 C++ 运行环境和数据，将C++ 开发的模块暴露给 JS 引擎调用，实现更高效的前端终端通讯
+
+
 ##### for in 和 for of的区别
 
 `for in` 可以遍历到对象上的所有属性名和方法名，**包括其原型链上定义的**属性名和方法名
@@ -12,6 +19,18 @@
 
 - `useEffect`前者被异步调度，当页面渲染完成后再去执行，不会阻塞页面渲染。
 - `useLayoutEffect`在 commit-layout 阶段新的DOM准备完成，但还未渲染到屏幕之前，同步执行。
+
+##### React 合成事件机制
+
+React提供了一种“顶层注册，事件收集，统一触发”的事件机制，React 的事件处理机制可以分为两个阶段：
+
+- 初始化时在 root 节点上**监听所有原生事件**，为每个原生事件都绑上一个事件处理函数，持有一个优先级（ListenerWrapperWithPriority）；
+- 原生事件触发时，root 上对应的事件处理函数会被执行，按照事件的优先级调度接下来的工作：
+  - 构造合成事件对象
+  - 从触发节点对应的 fiber 开始向上**收集真正的事件处理函数**（`listeners`）
+  - 根据冒泡还是捕获，正序/逆序执行收集到`listeners`，共享同一个合成事件。每个`listener`执行前，都会检查合成事件对象是否调用阻止冒泡的方法，并且将对应的元素作为 currentTarget 挂载到事件对象，最终执行`listener`
+
+合成事件在符合 W3C 规则的前提下，抹平浏览器间的差异，对关联事件进行合成，简化事件逻辑
 
 ##### React 和 Vue 的区别
 
@@ -47,7 +66,7 @@ Renderer 进程是多线程的：
 - `window.addEventListener('error')`
 - `window.addEventListener('unhandledrejection')`捕获未 catch 的异步错误
 
-![img](pre-exp.assets/v2-9e5ae1919c008d706f50bd5307aa065c_1440w.jpg)
+![img](exp0.assets/v2-9e5ae1919c008d706f50bd5307aa065c_1440w.jpg)
 
 数据上报
 
