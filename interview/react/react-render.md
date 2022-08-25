@@ -278,7 +278,7 @@ function completeUnitOfWork(unitOfWork: Fiber): void {
 
 ### 总结
 
-> `render`阶段：边遍历边构造`workInProgress Fiber树`的过程，期间`beginWork()`和`completeWork()`交替执行
+> `render`阶段：主要工作是构建`workInProgress Fiber树`和收集`effectList`，期间`beginWork()`和`completeWork()`交替执行
 >
 > `beginWork()`：为【递】遍历到的`workInProgressFiber`节点创建、连接并返回子 Fiber 节点
 >

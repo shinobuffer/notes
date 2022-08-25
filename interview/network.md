@@ -144,6 +144,10 @@ UDP 的特点是不可靠但效率高，适用于**对通信速度要求高，�
 
 - **强缓存**，在客户端判断。客户端根据`cache-control`和`expires`字段（前者优先级更高）来判断资源是否命中强缓存
 - **协商缓存**，在服务端判断。当强缓存没命中时，客户端通过`if-none-match`字段携带资源`etag`或`if-modified-since`字段携带资源`last-modified`发往服务端，由服务器指示客户端是否使用缓存（`304`）
+  - `if-none-match`优先级更高
+  - `last-modified`性能上比`etag`好，但精确度上比`etag`差（只能精确到 1s 内），而且均衡负载服务器上`last-modified`有可能有不一致的问题
+
+PS：强缓存是刷新无效的，协商缓存是刷新有效的
 
 
 #### GET 和 POST 的区别
@@ -194,15 +198,15 @@ HTTP 采用明文传输，存在被截获窥视篡改的风险，而且双方不
 
 HTTPS 在 HTTP 的基础上使用 TLS/SSL 进行加密，实现信息的加密、完整性校验和身份认证。HTTPS 在 TCP 握手后还需要进行 TLS 的握手，握手过程根据 key 交换算法的不同有差异，这里以 RSA 为例
 
-- 【1】浏览器发起`Client Hello`携带自己支持的 TLS 版本、加密套件，随机数`clientRandom`
+- 【1】客户端发起`Client Hello`携带自己支持的 TLS 版本、加密套件，随机数`clientRandom`
 - 【2】服务器响应`Server Hello`携带确认选择的 TLS 版本、加密套件，随机数`serverRandom`
 - 【3】服务器响应`certificate`携带服务器证书
 - 【4】服务器响应`Server Hello Done`表示发送完毕
-- 浏览器收到服务器证书后用内置 CA 证书验证服务器证书合法性，如果通过验证，继续下面的流程
-- 【5】浏览器发送`ClientKeyExchange`，携带公钥加密的`premaster secret`
+- 客户端收到服务器证书后用内置 CA 证书验证服务器证书合法性，如果通过验证，继续下面的流程
+- 【5】客户端发送`ClientKeyExchange`，携带公钥加密的`premaster secret`
 - 服务器使用私钥解密出`premaster secret`，双方连同之前的两个随机数计算出会话密钥
-- 【6】浏览器发送`ChangeChiperSpec`、会话密钥加密的`EncryptedHandshakeMessage`（供服务器验证）
-- 【7】服务器同样响应`ChangeChiperSpec`、会话密钥加密的`EncryptedHandshakeMessage`（供浏览器验证）
+- 【6】客户端发送`ChangeChiperSpec`、会话密钥加密的`EncryptedHandshakeMessage`（供服务器验证）
+- 【7】服务器同样响应`ChangeChiperSpec`、会话密钥加密的`EncryptedHandshakeMessage`（供客户端验证）
 
 之后双方的通信都基于会话密钥的对称加密之上进行
 
