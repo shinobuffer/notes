@@ -123,3 +123,61 @@ window.addEventListener('orientationchange', init)
 window.addEventListener('resize', init)
 ```
 
+> 字节二面
+
+#### 跨端开发的理解
+
+对研发效率的追求，催生出了跨平台技术的出现。相比于传统的原生开发，跨平台技术能实现一套代码多端运行、动态更新，可以以更高的效率和更低的成本开发应用，在大多数场景下是一个更优的选择
+
+跨平台技术可大致分为三类：
+
+- web 技术，使用 webView 来
+- 原生渲染，比如 RN，该方案通过执行JS代码来调用原生控件进行渲染，由C++中间层承担双方沟通的桥梁
+- 自渲染，比如 Flutter，该方案选择直接自绘控件，摆脱平台带来的差异性
+
+RN 渲染原理
+
+- JS侧通过 React 维护 Fiber Tree，并将更新转换为一连串指令通过 bridge 发送给 Native 侧
+- Native 侧根据 JS 侧的指令维护 Shadow Tree，计算节点布局信息，并生成相应的 UI 操作指令
+- 终端根据 UI 操作指令执行真正的 UI 渲染逻辑
+
+#### xhr 封装 get/post
+
+XMLHttpRequest 对象属性
+
+- `readyState`代理状态
+  - UNSENT-0-未`open()`
+  - OPENED-1-已`open()`
+  - HEADERS_RECEIVED-2-已`send()`且接收到响应头
+  - LOADING-3-下载中`responseText`已有部分数据
+  - DONE-4-下载完成
+- `status`HTTP状态码
+- `responseType`响应数据类型，可以是text、json、blob、arraybuffer
+- `response`响应内容，和`responseType`对应
+- `responseText`文本形式返回响应内容，要求`responseType`为 text
+- `timeout`超时时间
+- `withCredentials`是否携带 cookie
+
+XMLHttpRequest 对象事件
+
+- `onreadystatechange`代理状态变更事件
+- `onload`请求完成事件
+- `onerror/onabort/ontimeout`请求错误/终止/超时事件
+
+XMLHttpRequest 对象方法
+
+- `open(method, url, isAsync)`初始化一个请求（默认异步）
+- `setRequestHeader(header, value)`设置请求头
+- `send(body)`发送请求，`body`可以是Blob、FormData、URLSerachParams
+- `abort()`终止请求
+
+___
+
+封装步骤，可使用 Promise，具体实现见 [xhr-get-post.ts](https://github.com/Bersder/leetcode/blob/master/src/implementation/example/xhr-get-post.ts)
+
+1. 创建 xhr 对象
+2. 调用`open(method, url)`初始化请求
+3. 设置响应类型`responseType`、调用`setRequestHeader()`设置请求头
+4. 设置超时时间`timeout`和`Credentials`
+5. 绑定事件回调`onreadystatechange`接收响应（`readyState`等于4并且`status`正常）
+6. 调用`send(body)`发送请求
