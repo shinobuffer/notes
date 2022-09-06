@@ -16,8 +16,6 @@ TX 在职期间参与QQ浏览器小说业务的开发，主要负责QQ浏览器�
 
 工作上主要的技术栈是TS、React、Hippy，包含少量的 Vue 和 Nodejs。所以技能方面个人熟悉 TS、HTML、CSS、React 这套 H5 开发方案、也熟悉 Hippy 这套类 RN 的跨端开发方案，模块化工程化方面熟悉 webpack 的使用，工作上使用过并掌握Vue、Nodejs、MySQL
 
-
-
 #### 个人优缺点
 
 优点：

@@ -59,10 +59,11 @@ LocalStorage 和 SessionStorage 同样收到同源策略的限制，如果需要
 
 根据具体实现分为 Hash 路由和 History 路由
 
-- 【Hash 路由】使用 URL 的 hash 部分来承载 path 和 query，并通过`hashchange`事件监听 hash 的变化
+- 【Hash 路由】**修改 URL 的 hash 部分不会导致页面刷新**，使用 hash 部分来承载 path 和 query，并通过`hashchange`事件监听 hash 的变化，解析 URL 的 hash 部分并匹配路由
   - 锚点功能冲突；seo 不友好（因为搜索引擎是忽略hash部分）
   - 服务端无法获取 hash 中的 path 和 query
-- 【History 路由】利用浏览器的 History API（`pushState/replaceState/go()`）操作历史记录栈，并通过`popstate`事件监听历史记录栈的变化
+- 【History 路由】**利用浏览器的 History API 操作历史记录栈修改 URL 不会导致页面刷新**，可通过`popstate`事件监听历史记录栈的变化，解析 URL 并匹配路由
+  - History API 有`pushState/replaceState/go()`
   - 需要服务端配置，将所有路径指向根文件
 
 ### 地址栏输入 URL 后发生的事
@@ -82,7 +83,7 @@ LocalStorage 和 SessionStorage 同样收到同源策略的限制，如果需要
   - DOM 和 CSSOM 是并行构建的，但在构造 Render Tree 阶段前这两者都必须准备好
   - CSSOM 构建会阻塞 JS 执行（因为 JS执行可能会操作样式）
 - 【布局/Layout】根据渲染树计算每个节点的布局信息（位置和大小）
-- 【绘制/Painting】根据渲染树和 Layout 阶段收集的信息，分层绘制（渲染层）
+- 【绘制/Painting】根据渲染树和 Layout 阶段收集的信息，建立层叠上下文，分层绘制（渲染层）
 - 【合成/Composite】将不同层按重叠顺序合成为位图，交给 GPU 渲染上屏
 
 ![image](browser.assets/126033732-d5002255-1c88-4dee-9371-da166aacdca9.png)
@@ -126,3 +127,14 @@ ___
 - 合理使用 will-change 提示浏览器可能发生的变化，将渲染层提升为合成层利用 GPU 加速
 - 优先使用 CSS transform/animation 实现动画效果，同样是尽可能提升为合成层
 
+#### 网络安全
+
+ XSS（跨站脚本攻击），可以通过对外部数据进行校验和转义来防范
+
+- 反射型 XSS，攻击者在URL中插入攻击代码，服务端将攻击代码取出后返回给客户端执行
+- 存储型 XSS，攻击者将攻击代码提交到数据库中，服务端将攻击代码取出后返回给客户端执行
+- DOM 型 XSS，攻击者在URL中插入攻击代码，客户端从URL中取出攻击代码执行
+
+CSRF（跨站请求伪造），利用 cookie 自动携带的特性，在第三方网站上冒用用户身份凭证，向被攻击网站发送跨站请求。
+
+可以通过限制三方网站cookie、双重cookie、和csrf token 防范
