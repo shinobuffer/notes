@@ -137,4 +137,3 @@ export const clearEffectIndex = () => {
   index = 0;
 };
 ```
-

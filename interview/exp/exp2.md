@@ -131,7 +131,7 @@ window.addEventListener('resize', init)
 
 跨平台技术可大致分为三类：
 
-- web 技术，使用 webView 来
+- web 技术，使用 webView 来承载 h5 应用
 - 原生渲染，比如 RN，该方案通过执行JS代码来调用原生控件进行渲染，由C++中间层承担双方沟通的桥梁
 - 自渲染，比如 Flutter，该方案选择直接自绘控件，摆脱平台带来的差异性
 
