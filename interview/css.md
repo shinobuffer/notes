@@ -3,7 +3,8 @@
 万能方案（单独水平/垂直都可，行内/块级元素都可）
 
 - 万能的 flex 布局（grid 布局也行）
-- 先相对/绝对 50% 定位，后 translate 纠偏（知道宽高的话，也可以使用 margin 来纠偏，或者用 calc 一步解决）
+- 先相对/绝对 50% 定位，后 translate 纠偏（知道宽高的话，也可以使用 margin 来纠偏）
+- 绝对定位，定宽定高，`top/right/left/bottom: 0`和`margin: auto`
 
 其他水平居中方案
 

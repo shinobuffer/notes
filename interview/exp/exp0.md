@@ -2,7 +2,7 @@
 
 分别基于 React-reconciler、和 Vue-createRender 实现自定义渲染器，支持上层使用 React/Vue 进行编写
 
-Hippy 自己实现了类似React Native 中的 Fabric 架构，中间层使用 C++ HippyCore 负责抹平平台差异性和提供高性能模块，原理是通过`internalBinding`直接共享 JS 和 C++ 运行环境和数据，将C++ 开发的模块暴露给 JS 引擎调用，实现更高效的前端终端通讯
+Hippy 自己实现了类似React Native 中的 Fabric 架构，C++ 中间层 HippyCore 负责抹平平台差异性和提供高性能模块，原理是通过`internalBinding`直接共享 JS 和 C++ 运行环境和数据，直接在 JS 环境中注入函数/类供 JS 使用，实现更高效的前端终端通讯
 
 
 ##### for in 和 for of的区别
