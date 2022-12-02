@@ -1,7 +1,8 @@
 ## ArchLinux 安装指南：
 https://arch.icekylin.online
+
 https://archlinuxstudio.github.io/ArchLinuxTutorial
-推荐：spectacle timeshift
+
 pandoc：pandoc pandoc-crossref texlive-core（texlive-langchinese texlive-fontsextra）
 
 ## 软件安装历史
@@ -60,12 +61,6 @@ sudo pacman -S latte-dock-git plasma5-applets-window-title plasma5-applets-windo
 ::1 localhost
 1267.0.0.1 oshino.localdomain oshino
 ```
-### 蓝牙启用
-启用蓝牙前（`systemctl enable bluetooth`）安装`pulseaudio-bluetooth`
-
-### 网速显示插件不生效
-
-需要安装`ksysguard`来使Netspeed Widget生效
 
 ## ArchLinux 必备命令
 ### pacman 命令
