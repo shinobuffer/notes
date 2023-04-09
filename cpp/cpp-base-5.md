@@ -62,13 +62,13 @@ class B {
 public:
 	int fun(int);
 	double fun(double);
-}
+};
 
 class A : public B {
 public:
 	using B::fun; // 将基类所有重载函数都引入当前作用域
 	int fun(int); // 单独覆盖第一个重载函数
-}
+};
 ```
 
 ### 继承中的拷贝控制
@@ -91,23 +91,24 @@ public:
 
 模板声明/定义以 `template` 关键字打头，接着是尖括号包裹的==模板参数列表==，最后是平时的函数或类的声明/定义。==模板参数==首先可以是一个==类型参数==，每个类型参数前必须使用 `class` 或 `template` 关键字进行指示，类型参数可以当作类型说明符使用
 
-调用函数模板时，可以显式的指定模板实参，也可以让编译器根据函数实参来推断模板实参。一组模板实参可以生成一个特定版本的函数，这称为函数模板的实例化
+调用函数模板时，可以显式的指定模板实参，也可以让编译器根据函数实参来自动推断模板实参；另外函数模板用于初始化函数指针或为一个函数指针赋值时，编译器也会根据指针类型自动推断模板实参。剩下无法推断的模板实参则必须显式指定
+
+一组模板实参可以生成一个特定版本的函数，这称为函数模板的==实例化==
 
 ```c++
-template <typename T>
-T compare(const T &a, const T &b) {
-  return a - b;
-}
-
-// 编译器根据函数的实参推断模板参数为 int，实例化 int compare(int, int)
+template<typename T>
+T compare(const T &a, const T &b) {return a - b;}
+// 根据函数的实参推断模板实参为 int，实例化 int compare(const int&, const int&)
 compare(1, 2);
-// 显式的指明模板参数为 double，实例化 double compare(double, double)
+// 显式的指明模板实参为 double，实例化 double compare(const double&, const double&)
 compare<double>(1, 2);
+// 根据函数指针类型推断模板实参为 long，实例化 long compare(const long&, const long&)
+long (*pf)(const long&, const long&) = compare;
 ```
 
-> 编译阶段中，模板定义本身并不会生成代码，只有实例化模板的一个特定版本才会生成代码
+> 编译时，模板定义本身并不会生成代码，只有实例化模板的一个特定版本才会生成代码
 >
-> 模板中使用的操作不一定所有类型都支持，这种不支持的操作会在编译阶段被检查出来并抛错，因此要尽可能使用类型无关的代码来编写模板
+> 模板中使用的操作不一定所有类型都支持，这种不支持的操作会在编译阶段被检查出来并抛错
 
 模板参数还可以是==非类型参数==，非类型参数表示一个值，可以当作一个常量值使用，非类型参数的实参只能是如下两种形式：
 
@@ -115,7 +116,7 @@ compare<double>(1, 2);
 - 指向拥有静态生存期的对象或函数的指针或者左值引用
 
 ```c++
-// 这里的 N 是非类型参数
+// 这里的 N 是非类型参数（类型参数和非类型参数可以混用）
 template<typename T, size_t N>
 array<T, N> &fill_arr(array<T, N> &arr, T val) {
   for(size_t i = 0; i<N; ++i) {
@@ -129,24 +130,79 @@ array<int, 4> arr{};
 fill_arr(arr, 8); // arr = {8,8,8,8}
 ```
 
-> 类型参数和非类型参数可以混用
+### 模板实参推断 & 引用折叠
+
+函数形参除了使用模板类型参数名字本身，还可以选择型带有 `const`、`*`、`&` 等说明符，编译器会根据函数实参自动推断剩余的部分作为模板实参。特别的，对于只有模板类型参数名字的的函数形参，推断时会忽略顶层 `const` 和引用说明
+
+```c++
+template<typename T> void fun1(T); // 函数实参类型是啥，T 就是啥（忽略顶层 const 和引用说明）
+template<typename T> void fun2(T&); // 函数实参是 const int 则 T 是 const int，函数实参是 int 则 T 是 int
+template<typename T> void fun3(const T&); // 推断出来的 T 不含 const 和 & 说明
+```
+
+当一个函数形参是模板类型参数的一个左值引用时（`T&`），该函数形参只能绑定一个左值；如果再加上常量说明（`const T&`）则可进一步绑定一个右值
+
+当一个函数形参是模板类型参数的一个右值引用时（`T&&`），存在一种==引用折叠==机制，使得该函数形参不仅能绑定一个右值，还可以绑定一个左值，如表格最后一行所示
+
+| 函数形参类型 | 函数实参类型 | 推断 T 的类型        | 折叠类型（实例函数形参类型） |
+| ------------ | ------------ | -------------------- | ---------------------------- |
+| T&           | &            | 纯类型               | T&                           |
+| const T&     | &&           | 纯类型               | const T&                     |
+| T&&          | &            | 纯类型的左值引用类型 | T&                           |
+| T&&          | &&           | 纯类型               | T&&                          |
+
+函数形参使用 `T&&` 的一个场景是配合 `forward<T>()` 做==实参转发==，即维持一个函数实参的所有性质（是否为 `const ` 以及是左值还是右值）并继续传递给其他函数
+
+函数形参使用 `T&&` 利用引用折叠可以维持实参的 `const` 性质和左值性质，但是实参的右值性质还是无法维持（因为函数参数肯定是左值）。为了实现实参转发，需要利用标准库头文件 [`<utility>`](https://www.apiref.com/cpp-zh/cpp/utility.html) 提供的 `forward<T>()` 根据推断的 `T` 来维持实参类型信息
+
+```c++
+template<typename T>
+void print(T &t){
+  std::cout << "Lvalue ref" << std::endl;
+}
+
+template<typename T>
+void print(T &&t){
+  std::cout << "Rvalue ref" << std::endl;
+}
+
+template<typename T>
+void testForward(T &&v){ 
+  print(v); // 函数参数肯定是左值，永远调用左值版本的 print
+  // 完美转发，利用推断的 T 维持实参性质，实参为左值调用左值版本的 print，实参为右值调用右值版本的 print
+  print(std::forward<T>(v)); 
+  print(std::move(v)); // 将 v 转换为右值，永远调用右值版本的 print
+}
+
+int x = 1;
+testForward(x); //实参为左值
+testForward(std::move(x)); //实参为右值
+```
+
+### 函数模板与重载
+
+函数模板可以被同名其他函数模板或普通函数重载，模板实参能够推断成功的实例将额外作为可行函数参与匹配
+
+- 如果可行函数都是普通函数，则采用正常的函数匹配流程
+- 如果可行函数都是函数模板实例，则其中最特例化的版本作为最佳匹配（模板类型参数和实参匹配的部分越多，推断的模板实参部分越少，越特例化）
+- 如果可行函数包含普通函数和函数模板实例，并且双方都提供同样好的匹配，则普通函数优先匹配
 
 ### 类模板
 
-类模板的模板参数必须显式指定才能实例化，编译器为每个类模板实例生成一个独立的类，一个类模板的实例可以当成一个类类型使用
+类模板的模板参数必须显式指定才能实例化，编译器为每个类模板实例生成一个独立的类，一个类模板的实例可以当成一个类类型使用，因此可以为类模板实例定义类型别名
 
-类模板内定义的成员函数可以直接使用模板参数，类模板外定义的成员函数则需要重新为函数说明类模板的模板参数。在类模板的作用域内，类模板名本身默认隐式带上模板实参，可以直接使用
+类模板内定义的成员函数可以直接使用模板参数，类模板外定义的成员函数则需要重新说明类模板的模板参数。在类模板的作用域内，类模板名本身默认隐式带上模板实参，可以直接使用
 
 > 实例化一个类模板并不会实例化其所有成员函数，一个类模板实例的成员函数只有在代码中被使用才会实例化
 
 ```c++
-template <typename T>
+template<typename T>
 class A {
 	T funa(const T &);
   A& operator++(); // 在模板类的作用域内，使用类模板名本身可以省略模板实参，A 等效 A<T>
 };
 // 重新为类模板外定义的成员函数说明类模板的模板参数
-template <typename T>
+template<typename T>
 T A<T>::funa(const T &v) {return v;}
 ```
 
@@ -162,36 +218,167 @@ T A<T>::funa(const T &v) {return v;}
 无论是普通类还是类模板都可以定义==成员函数模板==，需要注意的是类模板的定义和成员函数模板的定义是独立的，他们的模板实参和实例化也是独立的
 
 ```c++
-template <typename T>
+template<typename T>
 class A {
   // 定义一个构造函数模板，专门适配各类容器的迭代器
-  template <typename It> A(It b, It e);
-}
+  template<typename It> A(It b, It e);
+};
 
 // 类模板外定义成员函数模板，类模板参数说明在前，成员函数模板参数说明在后
-template <typename T>
-template <typename It>
+template<typename T>
+template<typename It>
 A<T>::A(It b, It e) {}
 
 vector<double> v{1,2,3};
-A<int>(v.begin(), v.end()); // 类模板实参被指定为 int，成员函数模板实参被推断为 double
+A<int>(v.begin(), v.end()); // 类模板实参被指定为 int，成员函数模板实参被推断为 verctor<double>::iterator
+```
+
+### 可变参数模板
+
+可变数量的参数称为==参数包==，其中==模板参数包==用于模板参数，==函数参数包==用于函数参数，编译器会根据调用时传递的实参列表推断包中各个参数的类型。参数包只能放在参数列表的最后，通过 `...` 指示；`sizeof...(packet)` 可以获取参数包中参数的数量，返回一个常量表达式整型
+
+一个含参数包的==模式==可以在后面加上 `...` 进行==扩展==，等效于对参数包中每个实参分别应用该模式并用逗号分隔
+
+```c++
+template<typename... Args> // Args 为模板参数包
+// 对模式 const Args& 进行模板参数包扩展，若模板实参为 int, double 将扩展出 const int&, const double&
+void fun(const Args&... rest) {
+  // 获取参数包中参数数量，返回常量表达式
+  cout << sizeof...(Args) << endl;
+}
+fun(1, 1.0); // 参数包被推断为<int,double>，实例化 fun(const int&, const double&)
+```
+
+可变参数函数通常是递归的，在每次递归中处理消耗参数包中的若干个参数，然后将剩余的参数作为一个包继续交给自身处理（需要处理好递归结束条件，可通过判断包大小或提供一个非可变参数模板重载解决）
+
+```c++
+// 非可变参数模板比可变参数模板更特例化，因此当包中只剩一个参数时会调用该版本结束递归
+template<typename T>
+void print(const T &v) {
+	cout << v;
+}
+
+template<typename T, typename... Args>
+void print(const T& v, const Args&... rest) {
+  cout << v;
+	// 函数包扩展，让包中的第一个参数在下一次递归中被消耗，剩余参数作为下一次的参数包
+	print(rest...);
+}
+```
+
+容器的 `emplace_back()` 成员函数就是可变参数模板的一个例子，`emplace_back` 不仅需要支持不定数量参数，还需要维持实参的所有性质以适配元素的拷贝和移动行为
+
+```c++
+class Container {
+public:
+  // 为了实现实参转发，函数形参需要为 T&& 的形式，以此为模式进行模板参数包扩展
+	template<typename... Args> void emplace_back(Args&&... args) {
+    // 以模式 std::forward<Args>(args) 进行函数包扩展，等效于对每个函数实参进行转发
+    alloc.construct(first_free++, std::forward<Args>(args)...);
+  }
+};
+```
+
+### 模板特例化
+
+模板内可能存在部分操作对某些类型来说不支持或者是非预期的，对于这些类型可以专门给他们定义更特殊的实例/模板并重新提供实现，使得这些类型优先使用这些更特殊的实例/模板，这称为模板的==特例化==
+
+特例化一个函数模板要求在 `template` 后面加上空尖括号，并且为原模板的所有模板参数提供实参，然后便可重写函数实现
+
+> 特例化一个模板要求原模板需可见，函数模板特例化本质是原模板一个特殊的实例，而不是重载，因此不会影响函数匹配
+
+```c++
+// 这个函数模板不适用于指针类型，因为指针的减法不符合期望
+template<typename T>
+T compare(const T &a, const T &b) {return a - b;}
+// 特例化上面的模板，重新编写实现专门给整形指针类型使用
+template<>
+T compare(const int* const &pa, const int* const &pb) {return *a - *b;}
+```
+
+类模板也可以特例化，并且类模板还可以==部分特例化==，只为一部分模板参数提供实参，这是函数模板不具备的。另外还可以单独对类模板的某个成员函数进行特例化
+
+> 类模板完全特例化本质是元模板的一个特殊实例，类模板部分特例化本质仍是一个类模板
+
+```c++
+template<typename T, typename R>
+class A {
+  void fun();
+};
+// 特例化 fun 成员函数，专门给 <double, int> 实例使用
+template<>
+void A<double,int>::fun() {}
+
+// 部分特例化上面的模板，固定第一个模板实参为 int，专门给 <int, XX> 的实例使用
+template<typename R>
+class A<int, R> {};
 ```
 
 ### 模板参数
 
-使用作用域运算符访问模板参数上的类型成员时（假如该模板参数绑定了一个类类型），必须在前面加上 `typename` 关键字说明该名字是一个类型，用以与访问静态成员区分，如 `typename T::size_type size;`
+使用作用域运算符访问模板参数上的类型成员时（假设该模板参数绑定了一个类类型），必须在前面加上 `typename` 关键字说明该名字是一个类型，用以与访问静态成员区分，如 `typename T::size_type size;`
 
-在定义模板时可以指定默认模板实参，即便所有模板参数都有默认实参，使用默认实参显式实例化时的空尖括号也是不能省略的
+在定义模板时可以指定默认模板实参，即便所有模板参数都有默认实参，显式指定时空尖括号也是不能省略的
 
 ```c++
-template <typename T = int>
-T compare(const T &a, const T &b) {
-	return a - b;
+template<typename T = int>
+class A {};
+// 显式指定的尖括号不能省
+A<> a;
+```
+
+若函数模板的类型参数是推断得来，并且该类型参数被多个函数形参使用，则这些函数形参只能适用有限的类型转换
+
+1. 精确匹配（类型相同，或者数组/函数转换为对应的指针）
+2. `const` 转换匹配
+
+与之相对，如果是显式指定了类型参数，或者函数形参的类型是指定类型而不是模板的类型参数时，函数形参适用正常的类型转换
+
+```c++
+int a = 1;
+const int b = 2;
+double c = 2.0;
+// 类型参数推断而来
+compare(a, b); // 正确，适用 const 转换，int,const int 适配 const int,const int
+compare(a, c); // 错误，不适用算术转换。int,double 无法适配要求的 int,int
+// 显式指定类型参数，适用正常的类型转换
+compare<int>(1, 2.0); // 正确，显式指定了 int，相当于声明 int compare(const int &, const int &)
+```
+
+### 类型转换模板
+
+编写模板时可能会需要某个类型不直接使用模板参数，而使用模板参数某个子成员的类型（假设该模板参数绑定了一个类类型），这种情况可配合 `decltype()` 推断该间接类型。另外，`decltype()` 推断的间接类型相比所需类型可能会多了或缺少某些声明符（如引用/指针），这种情况可借助标准库头文件 [`<type_traits>`](https://www.apiref.com/cpp-zh/cpp/header/type_traits.html) 提供的类型转换模板，通过实例上 `tpye` 类型成员得到目标类型，如 `remove_reference<T>` 可以移除 `T` 中的引用说明
+
+```c++
+// It 绑定的是迭代器类型，但是需要用到迭代器元素的类型
+// 尾置返回类型配合 delctype 将返回类型推断为迭代器元素的引用类型
+template<typename It>
+auto fun_ref(It b, It e) -> decltype(*b) {
+	return *b;
 }
-// 显式实例化的尖括号不能省
-compare<>(3, 4);
+
+// 使用类型转换模板 remove_reference 去除 decltype 推断类型中的引用说明
+template<typename It>
+auto fun_not_ref(It b, It e) -> typename std::remove_reference<decltype(*b)>::type
+{
+	return *b;
+}
 ```
 
 ### 控制实例化
 
-通常编译器会
+多个独立编译的源文件使用相同的模板并提供相同的模板参数，会在每个文件中都生成一份实例造成额外开销。为了额避免重复实例化，可以通过==显式实例化==手动控制某个特定的实例
+
+- `template declaration`，实例化定义，请求编译器生成一份代码
+- `extern template declaration`，实例化声明，放在实例使用之前，说明其定义在其他文件中，不生成代码
+
+> 显式实例化类模板会实例化其所有成员函数
+
+```c++
+// 实例化定义
+template int compare(const int&, const int&);
+// 实例化声明（表明其定义在其他文件中）
+extern template int compare(const int&, const int&);
+// 调用实例
+compare(3,4);
+```
