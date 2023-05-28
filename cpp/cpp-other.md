@@ -54,7 +54,7 @@ uniform_int_distribution<int> int_dis(1, 10);
 uniform_real_distribution<double> real_dis(0, 1);
 
 // 使用随机源调用分布对象获得随机数
-cout << int_dis(e) << std::endl << real_dis(e);
+cout << int_dis(e) << endl << real_dis(e);
 ```
 
 ### 异常处理
